@@ -1,0 +1,8 @@
+package com.openclassroom.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.openclassroom.models.User;
+
+public interface DBUserRepository  extends JpaRepository<User, Integer> {
+	public User findByName(String name);
+}

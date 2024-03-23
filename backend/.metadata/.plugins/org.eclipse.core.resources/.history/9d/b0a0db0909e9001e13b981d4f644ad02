@@ -1,0 +1,5 @@
+package com.openclassroom.models;
+
+public class User {
+
+}

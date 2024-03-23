@@ -1,0 +1,5 @@
+package com.openclassroom.repositories;
+
+public interface UserRepository {
+
+}
