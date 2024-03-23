@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+1467426576.index
+1010387835.index
