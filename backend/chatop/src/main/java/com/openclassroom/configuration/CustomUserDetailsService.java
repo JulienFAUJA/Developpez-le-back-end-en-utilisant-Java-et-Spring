@@ -2,6 +2,8 @@ package com.openclassroom.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,19 +12,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.openclassroom.models.DBUser;
-import com.openclassroom.repositories.DBUserRepository;
+
+import com.openclassroom.models.UserModel;
+import com.openclassroom.repositories.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
-	private DBUserRepository DBUserRepository;
+	private UserRepository DBUserRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-		DBUser user = DBUserRepository.findByName(name);
+	public UserModel loadUserByUsername(String name) throws UsernameNotFoundException {
+		Optional<UserModel> user = UserRepository.findByName(name);
 		
-		return new User(user.getName(), user.getPassword(), getGrantedAuthorities(user.getRole()));
+		return new UserModel(user.getClass().getName(), user.getClass().getPassword(), getGrantedAuthorities(user.getRole()));
 	}
 
 	private List<GrantedAuthority> getGrantedAuthorities(String role) {
