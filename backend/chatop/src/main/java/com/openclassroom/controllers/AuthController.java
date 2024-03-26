@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 	
-	@PostMapping("/register")
+	@PostMapping("api/auth/register")
 	public String postRegister() {
 		return "Welcome, User";
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("api/auth/login")
 	public String postLogin() {
 		return "Welcome, User";
 	}
 	
-	@GetMapping("/me")
+	@GetMapping("api/auth/me")
 	public String getMe() {
 		return "Welcome, User";
 	}

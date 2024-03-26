@@ -231,3 +231,30 @@
 2024-03-25 13:11:50,493 [Worker-182: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
 2024-03-25 13:11:50,498 [Worker-182: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
 2024-03-25 13:12:58,317 [Worker-176: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-25 13:12:58,325 [Worker-176: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-25 13:12:58,329 [Worker-176: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 10:45:17,410 [Worker-225: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 10:45:17,419 [Worker-225: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 10:45:17,424 [Worker-225: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 10:45:59,117 [Worker-232: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 10:45:59,124 [Worker-232: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 10:45:59,129 [Worker-232: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 10:46:04,689 [Worker-237: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 10:46:04,696 [Worker-237: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 10:46:04,701 [Worker-237: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 10:47:36,906 [Worker-235: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 10:47:36,914 [Worker-235: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 10:47:36,919 [Worker-235: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 10:54:31,624 [Worker-223: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 10:54:31,633 [Worker-223: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 10:54:31,637 [Worker-223: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 11:03:58,897 [Worker-240: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 11:03:58,926 [Worker-240: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 11:03:58,932 [Worker-240: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 11:04:47,852 [Worker-225: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 11:04:47,859 [Worker-225: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 11:04:47,863 [Worker-225: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 11:04:51,267 [Worker-234: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-03-26 11:04:51,273 [Worker-234: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2024-03-26 11:04:51,278 [Worker-234: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\Developpez-le-back-end-en-utilisant-Java-et-Spring\backend\chatop\src\test\resources
+2024-03-26 11:05:43,499 [Worker-235: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes

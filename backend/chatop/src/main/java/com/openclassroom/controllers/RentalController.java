@@ -8,22 +8,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RentalController {
 	
-	@GetMapping("/rentals")
+	@GetMapping("api/rentals")
 	public String getAllRentals() {
 		return "Welcome, User";
 	}
 	
-	@GetMapping("/rentals/:id")
+	@GetMapping("api/rentals/:id")
 	public String getRentalById() {
 		return "Welcome, User";
 	}
 	
-	@PostMapping("/rentals")
+	@PostMapping("api/rentals")
 	public String postRental() {
 		return "Welcome, User";
 	}
 	
-	@PutMapping("/rentals/:id")
+	@PutMapping("api/rentals/:id")
 	public String setRentalForId() {
 		return "Welcome, User";
 	}
