@@ -9,9 +9,7 @@ import com.openclassroom.models.MessageModel;
 
 @Repository
 public interface MessageRepository  extends CrudRepository<MessageModel, Integer> {
-	public Optional<MessageModel> findById(Integer id);
-	public List<MessageModel> findAllByUserId(Integer id);
-	public List<MessageModel> findAllByRentalId(Integer id);
-	public List<MessageModel> findAll();
+//	public Optional<MessageModel> findById(Integer id);
+//	public List<MessageModel> findAll();
 
 }

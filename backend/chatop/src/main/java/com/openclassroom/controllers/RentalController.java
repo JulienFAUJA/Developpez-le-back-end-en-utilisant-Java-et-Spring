@@ -1,30 +1,59 @@
 package com.openclassroom.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassroom.dto.RentalDTO;
+import com.openclassroom.models.RentalModel;
+import com.openclassroom.services.RentalService;
+import com.openclassroom.services.UserService;
+
 @RestController
+@RequestMapping("/rentals")
 public class RentalController {
 	
-	@GetMapping("api/rentals")
-	public String getAllRentals() {
-		return "Welcome, User";
+	@Autowired
+    private RentalService rentalService;
+	
+	@Autowired
+    private UserService userService;
+   
+	
+    
+	
+  
+	
+	@GetMapping
+	public List<RentalDTO> getAllRentals() {
+		List<RentalDTO> rentals = new ArrayList<>();
+		rentalService.getRentals().forEach(r -> rentals.add(r));
+		System.out.println("RentalController:"+rentals);
+		return rentals;
 	}
 	
-	@GetMapping("api/rentals/:id")
-	public String getRentalById() {
-		return "Welcome, User";
+
+	@GetMapping("{id}")
+	public RentalDTO getRentalById(@PathVariable("id") Integer id) {
+		System.out.println("RentalController:"+rentalService.getRentalById(id).toString());
+		return rentalService.getRentalById(id);
 	}
 	
-	@PostMapping("api/rentals")
+	@PostMapping()
 	public String postRental() {
 		return "Welcome, User";
 	}
 	
-	@PutMapping("api/rentals/:id")
-	public String setRentalForId() {
+	@PutMapping("{id}")
+	public String setRentalForId(@PathVariable("id") Integer id) {
 		return "Welcome, User";
 	}
 

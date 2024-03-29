@@ -1,3 +1,6 @@
+DROP DATABASE `chatop`;
+CREATE DATABASE `chatop`;
+
 CREATE TABLE `USERS` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(255),
@@ -43,7 +46,7 @@ INSERT INTO USERS (email, name, password, created_at) VALUES
   ('test3@test.com', 'test3', 'test3', now());
 
 INSERT INTO RENTALS (name, surface, price, picture, description, owner_id, created_at) VALUES
-  ('Chambre cosy', 18, 250, 'https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg', 'Chambre douillete dans maison luxueuse', 3, now()),
+  ('Chambre cosy', 18, 250, 'https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg', 'Chambre douillette dans maison luxueuse', 3, now()),
   ('T2 sympa', 65, 450, 'https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg', 'Appartement Coquet', 2, now()),
   ('Loft vintage', 500, 4250, 'https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg', 'Loft spacieux, parfait pour artistes', 1, now()),
   ('Manoir victorien', 2000, 42485, 'https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg', 'Manoir de type Victorien pour fiestas mondaines', 1, now());

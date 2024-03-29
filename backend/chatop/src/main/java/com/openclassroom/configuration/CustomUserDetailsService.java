@@ -17,16 +17,18 @@ import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.UserRepository;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService /*implements UserDetailsService */ {
 	@Autowired
-	private UserRepository DBUserRepository;
+	private UserRepository userRepository;
 
-	@Override
-	public UserModel loadUserByUsername(String name) throws UsernameNotFoundException {
-		Optional<UserModel> user = UserRepository.findByName(name);
-		
-		return new UserModel(user.getClass().getName(), user.getClass().getPassword(), getGrantedAuthorities(user.getRole()));
-	}
+
+	
+//	@Override
+//	public UserModel loadUserByUsername(String name) throws UsernameNotFoundException {
+//		Optional<UserModel> user = userRepository.findByName(name);
+//		
+//		return new UserModel(user.getClass().getName(), user.getClass().getPassword());
+//	}
 
 	private List<GrantedAuthority> getGrantedAuthorities(String role) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
