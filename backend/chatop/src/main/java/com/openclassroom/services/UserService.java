@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.UserDTO;
+import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.UserRepository;
@@ -45,6 +46,16 @@ public class UserService implements UserDetailsService {
     private UserRegisterDTO convertToRegisterDTO(UserModel user) {
         return modelMapper.map(user, UserRegisterDTO.class);
     }
+    
+    
+    private UserModel convertLoginToEntity(UserLoginDTO userLoginDTO) {
+        return modelMapper.map(userLoginDTO, UserModel.class);
+    }
+    
+    private UserLoginDTO convertToLoginDTO(UserModel user) {
+        return modelMapper.map(user, UserLoginDTO.class);
+    }
+    
     
 	@Override
 	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -99,6 +110,18 @@ public class UserService implements UserDetailsService {
 //
 //      
 //        return jwtService.generateToken(new UserLoginDTO(userDTOToSave.getEmail(), userRegisterDTO.getPassword()));
+	}
+	
+	
+	public UserModel loginUser(UserLoginDTO userLoginDTO) {
+		
+		String password_hash = BCrypt.hashpw(userLoginDTO.getPassword(), BCrypt.gensalt());
+		userLoginDTO.setPassword(password_hash);
+		System.out.println("userLoginDTO:"+userLoginDTO.toString());
+		UserModel userLogged = convertLoginToEntity(userLoginDTO);
+    	return userLogged;
+    	
+
 	}
 	
 

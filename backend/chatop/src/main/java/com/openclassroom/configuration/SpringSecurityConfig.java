@@ -30,7 +30,7 @@ public class SpringSecurityConfig {
 	
 	@Autowired
 	private UserRepository userRepository;
-	private String jwtKey = "laclegeneree256…";
+	private String jwtKey = "LFNX8G69aS6zthofavzNERyzTVITbuDKn5Ypp2w72ktQ8x6NS1FP4TgiC35Z38CT";
 	
 	
 	@Bean
