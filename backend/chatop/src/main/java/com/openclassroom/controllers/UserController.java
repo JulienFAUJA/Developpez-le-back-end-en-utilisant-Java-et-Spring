@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassroom.dto.MessageDTO;
 import com.openclassroom.dto.UserDTO;
 import com.openclassroom.services.UserService;
 
@@ -20,13 +19,13 @@ public class UserController {
 	@Autowired
     private UserService userService;
 	
-	@GetMapping("/all")
-	public List<UserDTO> getAllUsers() {
-		List<UserDTO> users = new ArrayList<>();
-		userService.getUsers().forEach(u -> users.add(u));
-		System.out.println("UserController:"+users);
-		return users;
-	}
+//	@GetMapping("/all")
+//	public List<UserDTO> getAllUsers() {
+//		List<UserDTO> users = new ArrayList<>();
+//		userService.getUsers().forEach(u -> users.add(u));
+//		System.out.println("UserController:"+users);
+//		return users;
+//	}
 	
 	@GetMapping("{id}")
 	public UserDTO getUser(@PathVariable("id") Integer id) {

@@ -1,18 +1,21 @@
 package com.openclassroom.models;
 
 import java.sql.Timestamp;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 
 @Entity
 @Table(name = "users")
-public class UserModel {
+public class UserModel implements UserDetails{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,12 +87,57 @@ public class UserModel {
 		this.name = name;
 		this.password = password;
 	}
+	public UserModel(Integer id, String email, String name, String password, Timestamp created_at, Timestamp updated_at) {
+		this.id=id;
+		this.email = email;
+		this.name = name;
+		this.password = password;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+	}
+	
 	public UserModel(String email, String name, String password, Timestamp created_at, Timestamp updated_at) {
 		this.email = email;
 		this.name = name;
 		this.password = password;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	
