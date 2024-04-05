@@ -87,9 +87,7 @@ public class UserService implements UserDetailsService {
 		return convertToDTO(user.orElseThrow());
 	}
 	
-	public String login() {
-		return null;
-	}
+	
 	
 	public UserModel registerUser(UserRegisterDTO userRegisterDTO) {
 		System.out.println("userRegisterDTO:"+userRegisterDTO.toString());

@@ -1,6 +1,7 @@
 package com.openclassroom.dto;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import com.openclassroom.models.MessageModel;
 
@@ -91,6 +92,11 @@ public class MessageDTO {
 	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
+	
+	public void setCreated_atNow() {
+		Timestamp now = Timestamp.from(Instant.now());
+		this.setCreated_at(now);
+	}
 
 	public Timestamp getUpdated_at() {
 		return updated_at;
@@ -98,6 +104,11 @@ public class MessageDTO {
 
 	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
+	}
+	
+	public void setUpdated_atNow() {
+		Timestamp now = Timestamp.from(Instant.now());
+		this.setUpdated_at(now);
 	}
 
     

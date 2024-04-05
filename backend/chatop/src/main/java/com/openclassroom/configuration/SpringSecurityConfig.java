@@ -3,6 +3,7 @@ package com.openclassroom.configuration;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -30,7 +31,9 @@ public class SpringSecurityConfig {
 	
 	@Autowired
 	private UserRepository userRepository;
-	private String jwtKey = "LFNX8G69aS6zthofavzNERyzTVITbuDKn5Ypp2w72ktQ8x6NS1FP4TgiC35Z38CT";
+	
+	@Value("${jwt.secret}")
+	private String jwtKey; 
 	
 	
 	@Bean

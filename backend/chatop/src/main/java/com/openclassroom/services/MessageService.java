@@ -6,10 +6,12 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.MessageDTO;
 import com.openclassroom.models.MessageModel;
+import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.MessageRepository;
 
 @Service
@@ -22,14 +24,20 @@ public class MessageService {
 	private ModelMapper modelMapper;
 	
 	
-    private MessageModel convertToEntity(MessageDTO messageDto) {
-        return modelMapper.map(messageDto, MessageModel.class);
-    }
     
     private MessageDTO convertToDTO(MessageModel message) {
         return modelMapper.map(message, MessageDTO.class);
     }
     
+    
+    public MessageModel postMessage(MessageDTO messageDTO) {
+		System.out.println("messageDTO:"+messageDTO.toString());
+		messageDTO.setCreated_atNow();
+		messageDTO.setUpdated_atNow();
+		MessageModel messageCreated = modelMapper.map(messageDTO, MessageModel.class);
+		messageRepository.save(messageCreated);
+    	return messageCreated;
+    }
    
 	
 	public Iterable<MessageDTO> getMessages(){

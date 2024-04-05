@@ -23,7 +23,6 @@ public class JWTService {
 
 
     private final JwtEncoder jwtEncoder;
-
 	private final String jwtKey;
 	
 	public JWTService(JwtEncoder jwtEncoder, @Value("${jwt.secret}") String jwtKey) {
