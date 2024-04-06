@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassroom.dto.MessageDTO;
 import com.openclassroom.models.MessageModel;
-import com.openclassroom.services.JWTService;
+import com.openclassroom.services.JWTokenService;
 import com.openclassroom.services.MessageService;
 
 import jakarta.validation.Valid;
@@ -29,9 +29,9 @@ public class MessageController {
 	
 	
 	@Autowired
-	private JWTService jwtService;
+	private JWTokenService jwtService;
 	
-	@PostMapping(value ="/", consumes={"application/json"})
+	@PostMapping(value ="", consumes={"application/json"})
 	public String postMessage(@Valid @RequestBody MessageDTO messageDTO) {
 		MessageModel messageCreated = messageService.postMessage(messageDTO);
 		System.out.print("MessageController:"+messageCreated.toString());

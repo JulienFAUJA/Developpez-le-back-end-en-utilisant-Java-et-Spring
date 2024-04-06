@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +33,8 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	
+
+
     private UserModel convertToEntity(UserDTO userDto) {
         return modelMapper.map(userDto, UserModel.class);
     }
@@ -57,13 +61,22 @@ public class UserService implements UserDetailsService {
     }
     
     
-	@Override
-	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-		UserModel user = userRepository.findByEmail(name)
-				.orElseThrow(() -> new UsernameNotFoundException("Aucun utilisateur ne correspond à cet identifiant..."));
-		return new UserModel(user.getEmail(), user.getName(), user.getPassword(), user.getCreated_at(), user.getUpdated_at());
-	}
+//	@Override
+//	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+//		UserModel user = userRepository.findByEmail(name)
+//				.orElseThrow(() -> new UsernameNotFoundException("Aucun utilisateur ne correspond à cet identifiant..."));
+//		return new UserModel(user.getEmail(), user.getName(), user.getPassword(), user.getCreated_at(), user.getUpdated_at());
+//	}
+    
+    
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+    }
 
+    
+    
 	private List<GrantedAuthority> getGrantedAuthorities(String role) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
@@ -112,7 +125,8 @@ public class UserService implements UserDetailsService {
 	
 	
 	public UserModel loginUser(UserLoginDTO userLoginDTO) {
-		
+//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword()));
+//		System.out.println("getPrincipal:"+authentication.getPrincipal());
 		String password_hash = BCrypt.hashpw(userLoginDTO.getPassword(), BCrypt.gensalt());
 		userLoginDTO.setPassword(password_hash);
 		System.out.println("userLoginDTO:"+userLoginDTO.toString());

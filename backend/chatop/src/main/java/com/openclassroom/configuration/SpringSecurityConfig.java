@@ -1,24 +1,18 @@
 package com.openclassroom.configuration;
 
-import javax.crypto.spec.SecretKeySpec;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.openclassroom.repositories.UserRepository;
 import com.openclassroom.services.UserService;
 
@@ -32,59 +26,66 @@ public class SpringSecurityConfig {
 	@Autowired
 	private UserRepository userRepository;
 	
+	
 	@Value("${jwt.secret}")
 	private String jwtKey; 
 	
-	
-	@Bean
-	public JwtDecoder jwtDecoder() {
-		SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length,"RSA");
-		return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
-	}
-	
+	 public final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+	    public SpringSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+	        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	    }
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http
-                .cors(Customizer.withDefaults())
-                // Désactivation du CSRF
-                .csrf(csrf -> csrf.disable())
-                // Pour être en mode STATELESS
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                        //.anyRequest().authenticated())
-                        .anyRequest().anonymous())
-                .httpBasic(Customizer.withDefaults())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-
-                .build();
+		return http.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      
+       .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/register/**").permitAll()
+                .requestMatchers("/api/auth/login/**").permitAll()
+                .anyRequest().authenticated()).userDetailsService(userService)
+           
+       //.authenticationManager(authenticationManager)
+        // Add JWT token filter
+        .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();                
 	}
 	
+//	@Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
+//        return authenticationManagerBuilder.build();
+//    }
+	
+	@Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+
+//	 @Bean
+//	 public JwtDecoder jwtDecoder() {
+//		 SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length,"RSA");
+//			return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
+//	 }
+//
+//	 @Bean
+//		public JwtEncoder jwtEncoder() {
+//			return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
+//		}
+//	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}	
 	
-	@Bean
-	public JwtEncoder jwtEncoder() {
-		return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
-	}
 
-//	@Bean
-//    public UserDetailsService userDetailsService() {
-//        return username -> userRepository.findByEmail(username)
-//                .orElseThrow();
-//    }
-//
-//	
-//	@Bean
-//	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
-//		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//	authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
-//		return authenticationManagerBuilder.build();
-//	}
+	
+
 	
 }
 
+//.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
 

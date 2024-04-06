@@ -8,7 +8,7 @@ import com.openclassroom.models.UserModel;
 public class UserLoginDTO {
 
 	private String email;
-	private String name;
+//	private String name;
 	private String password;
 
 	
@@ -21,13 +21,13 @@ public class UserLoginDTO {
 		this.email = email;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+//	public String getName() {
+//		return name;
+//	}
+//
+//	public void setName(String name) {
+//		this.name = name;
+//	}
 	
 	public String getPassword() {
 		return password;
@@ -38,32 +38,26 @@ public class UserLoginDTO {
 	}
 
 	
-	public UserLoginDTO() {
-	}
 	
 
 	public UserLoginDTO(String email, String password) {
 		this.email = email;
 		this.password = password;
+		System.out.println("email:"+email+"password:"+password);
 	}
 	
-	public UserLoginDTO(String email, String name, String password) {
-		this.email = email;
-		this.name = name;
-		this.password = password;
-		
-	}
+
 	
 	
 	@Override
 	public String toString() {
-		return "UserLoginDTO [email=" + email + ", name=" + name + ", password=" + password+ "]";
+		return "UserLoginDTO [email=" + email + ", password=" + password+ "]";
 	}
 
 	
 	public UserLoginDTO(UserModel user) {
 		this.email = user.getEmail();
-		this.name = user.getName();
+//		this.name = user.getName();
 		this.password = user.getPassword();
     }
 }

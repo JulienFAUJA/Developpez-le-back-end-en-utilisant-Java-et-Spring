@@ -75,9 +75,7 @@ public class UserModel implements UserDetails{
 		this.updated_at = updated_at;
 	}
 	
-	public UserModel() {
-	}
-
+	
 	public UserModel(String email, String password) {
 		this.email = email;
 		this.password = password;
