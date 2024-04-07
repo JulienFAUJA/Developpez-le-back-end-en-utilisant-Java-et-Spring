@@ -1,8 +1,8 @@
 package com.openclassroom.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +57,7 @@ private AuthService authService;
 		return token;
 	}
 	
-//	@PostMapping(value ="/login__", consumes={"application/json"})
+//	@PostMapping(value ="/login", consumes={"application/json"})
 //	public String getToken(@RequestBody UserLoginDTO userLoginDTO) {
 //		System.out.print("getToken1:"+userLoginDTO);
 //		UserModel userLogged = userService.loginUser(userLoginDTO);
@@ -65,13 +65,14 @@ private AuthService authService;
 ////		System.out.print("getToken2:"+token);
 //		return null;
 //}
-//	
+	
 	
 	
 	@PostMapping(value ="/login", consumes={"application/json"})
-    public String login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
-		String token = authService.authenticate(userLoginDTO);
-		return token;
+	@ResponseBody
+    public ResponseEntity<String> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+		String token = authService.authenticating(userLoginDTO);
+		return ResponseEntity.ok(token);
     }
 	
 	
@@ -81,6 +82,15 @@ private AuthService authService;
 		return this.authService.me(principal);
 		
 	}
+	
+	/*
+	 * logging.level.org.springframework.security=DEBUG
+
+logging.file.path=C:\Users\Julie\OneDrive\Documents\Ecole\OpenClassRoom\Projets\Projet03\Code\logs
+logging.file.name=myapp.log
+spring.session.store-type=jdbc
+	 * 
+	 */
 	
 
 }

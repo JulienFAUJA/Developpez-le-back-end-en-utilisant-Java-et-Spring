@@ -9,7 +9,7 @@ import com.openclassroom.models.UserModel;
 
 @Repository
 public interface UserRepository  extends CrudRepository<UserModel, Integer> {
-	public Optional<UserModel> findByEmail(String email);
+	public Optional<UserModel> findByUsername(String username);
 	public Optional<UserModel> findByName(String name);
 	public Optional<UserModel> findById(Integer id);
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,8 @@ public class UserModel implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String email;
+	@Column(name="email")
+	private String username;
 	private String name;
 	private String password;
 	private Timestamp  created_at;
@@ -35,12 +37,14 @@ public class UserModel implements UserDetails{
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	@Override
+	public String getUsername() {
+		return username;
 	}
+	
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
@@ -75,27 +79,36 @@ public class UserModel implements UserDetails{
 		this.updated_at = updated_at;
 	}
 	
+	public UserModel() {
+		
+	}
 	
-	public UserModel(String email, String password) {
-		this.email = email;
+	@Override
+	public String toString() {
+		return "UserModel [id=" + id + ", username=" + username + ", name=" + name + ", password=" + password
+				+ ", created_at=" + created_at + ", updated_at=" + updated_at + "]";
+	}
+
+	public UserModel(String username, String password) {
+		this.username = username;
 		this.password = password;
 	}
-	public UserModel(String email, String name, String password) {
-		this.email = email;
+	public UserModel(String username, String name, String password) {
+		this.username = username;
 		this.name = name;
 		this.password = password;
 	}
-	public UserModel(Integer id, String email, String name, String password, Timestamp created_at, Timestamp updated_at) {
+	public UserModel(Integer id, String username, String name, String password, Timestamp created_at, Timestamp updated_at) {
 		this.id=id;
-		this.email = email;
+		this.username = username;
 		this.name = name;
 		this.password = password;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
 	
-	public UserModel(String email, String name, String password, Timestamp created_at, Timestamp updated_at) {
-		this.email = email;
+	public UserModel(String username, String name, String password, Timestamp created_at, Timestamp updated_at) {
+		this.username = username;
 		this.name = name;
 		this.password = password;
 		this.created_at = created_at;
@@ -108,11 +121,7 @@ public class UserModel implements UserDetails{
 		return null;
 	}
 
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public boolean isAccountNonExpired() {

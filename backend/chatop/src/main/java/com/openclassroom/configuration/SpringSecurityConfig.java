@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +22,7 @@ import com.openclassroom.services.UserService;
 public class SpringSecurityConfig {
 	
 	@Autowired
+	@Lazy
 	private UserService userService;
 	
 	@Autowired
@@ -38,17 +40,23 @@ public class SpringSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http.csrf(csrf -> csrf.disable())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      
+		return http
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session
+			    		   
+			    		   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))//.maximumSessions(1))
        .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register/**").permitAll()
-                .requestMatchers("/api/auth/login/**").permitAll()
-                .anyRequest().authenticated()).userDetailsService(userService)
+                .requestMatchers("/api/auth/register/").permitAll()
+                .requestMatchers("/api/auth/login/").permitAll()
+                .anyRequest().authenticated())//.userDetailsService(userService)
+       
            
        //.authenticationManager(authenticationManager)
+       
         // Add JWT token filter
         .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        
+        
         .build();                
 	}
 	

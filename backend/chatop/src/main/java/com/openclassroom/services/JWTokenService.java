@@ -7,7 +7,6 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.openclassroom.models.UserModel;
@@ -26,26 +25,29 @@ public class JWTokenService {
     
     private final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
     
-//    private final TokenRepository tokenRepository;
-//
-//    public JWTokenService(TokenRepository tokenRepository) {
-//        this.tokenRepository = tokenRepository;
-//    }
+
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
 
-    public boolean isValid(String token, UserModel user) {
-        String username = extractEmail(token);
-
-//        boolean validToken = tokenRepository
-//                .findByToken(token)
-//                .map(t -> !t.isLoggedOut())
-//                .orElse(false);
-
-        return (username.equals(user.getEmail())) && !isTokenExpired(token) ; //&& validToken
+    public boolean isValid(String token, String email) {
+        String subject  = extractEmail(token);
+        boolean validToken;
+        try {
+            Jwts.parser()
+                    .verifyWith(getSigninKey())
+                    .requireIssuer("self")
+                    .build()
+                    .parseSignedClaims(token);
+            validToken=true;
+        } catch (Exception ex) {
+        	System.out.println(ex.getMessage());
+        	validToken=false;
+        }
+        System.out.println("Token comparaison:"+subject +" -> "+email+"\nusername==email:"+subject.equals(email)+"\n!isTokenExpired(token):"+!isTokenExpired(token)+"\nvalidToken:"+validToken);
+        return (subject.equals(email) && !isTokenExpired(token) && validToken);
     }
 
     private boolean isTokenExpired(String token) {
@@ -69,15 +71,18 @@ public class JWTokenService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+    
+   
 
 
-    public String generateToken(UserModel user) {
+    public String generateToken(String email) {
         String token = Jwts
                 .builder()
-                .subject(user.getEmail())
+                .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
+                .issuer("self")
                 .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000 ))
-                .signWith(getSigninKey())
+                .signWith(getSigninKey(), Jwts.SIG.HS384)
                 .compact();
 
         return token;

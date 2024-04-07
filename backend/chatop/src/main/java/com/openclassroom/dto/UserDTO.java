@@ -8,7 +8,7 @@ import com.openclassroom.models.UserModel;
 public class UserDTO {
 	
 	private Integer id;
-	private String email;
+	private String username;
 	private String name;
 	private Timestamp  created_at;
 	private Timestamp  updated_at;
@@ -21,12 +21,13 @@ public class UserDTO {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
+	
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
@@ -58,15 +59,15 @@ public class UserDTO {
 	}
 	
 
-	public UserDTO(String email, String name) {
-		this.email = email;
+	public UserDTO(String username, String name) {
+		this.username = username;
 		this.name = name;
 	}
 	
 	
-	public UserDTO(Integer id, String email, String name, Timestamp created_at, Timestamp updated_at) {
+	public UserDTO(Integer id, String username, String name, Timestamp created_at, Timestamp updated_at) {
 		this.id=id;
-		this.email = email;
+		this.username = username;
 		this.name = name;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
@@ -74,7 +75,7 @@ public class UserDTO {
 	
 	public UserDTO(UserModel user) {
 		this.id=user.getId();
-		this.email = user.getEmail();
+		this.username = user.getUsername();
 		this.name = user.getName();
 		this.created_at = user.getCreated_at();
 		this.updated_at = user.getUpdated_at();

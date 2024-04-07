@@ -48,28 +48,33 @@ public class AuthService {
     public String register(UserRegisterDTO request) {
 
         // check if user already exist. if exist than authenticate the user
-        if(userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if(userRepository.findByUsername(request.getEmail()).isPresent()) {
             return "User already exist";
         }
 
         UserModel user = new UserModel(request.getEmail(), request.getName(), passwordEncoder.encode(request.getPassword()));
         
         user = userRepository.save(user);
-        String jwt = jwtService.generateToken(user);
+        String jwt = jwtService.generateToken(request.getEmail());
         return jwt;
 
     }
 
-    public String authenticate(UserLoginDTO request) {
-        authenticationManager.authenticate(
+    public String authenticating(UserLoginDTO request) {
+    	    	System.out.println("request:"+request.toString());
+    	    
+    	    	Authentication authentication=authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
-                        request.getPassword()
+                        passwordEncoder.encode(request.getPassword())
                 )
         );
-
-        UserModel user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        String jwt = jwtService.generateToken(user);
+    	    	System.out.println("authentication:"+authentication.toString());
+        UserModel user = (UserModel)authentication.getPrincipal();
+        System.out.println("principal:"+user.toString());
+        //userRepository.findByUsername(request.getUsername()).orElseThrow();
+        String jwt = jwtService.generateToken(user.getUsername());
+       
 
 
         return jwt;

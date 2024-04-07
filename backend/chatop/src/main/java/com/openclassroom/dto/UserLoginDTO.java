@@ -8,7 +8,6 @@ import com.openclassroom.models.UserModel;
 public class UserLoginDTO {
 
 	private String email;
-//	private String name;
 	private String password;
 
 	
@@ -21,13 +20,7 @@ public class UserLoginDTO {
 		this.email = email;
 	}
 
-//	public String getName() {
-//		return name;
-//	}
-//
-//	public void setName(String name) {
-//		this.name = name;
-//	}
+	
 	
 	public String getPassword() {
 		return password;
@@ -46,7 +39,7 @@ public class UserLoginDTO {
 		System.out.println("email:"+email+"password:"+password);
 	}
 	
-
+	
 	
 	
 	@Override
@@ -56,8 +49,7 @@ public class UserLoginDTO {
 
 	
 	public UserLoginDTO(UserModel user) {
-		this.email = user.getEmail();
-//		this.name = user.getName();
+		this.email = user.getUsername();
 		this.password = user.getPassword();
     }
 }
