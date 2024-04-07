@@ -25,12 +25,8 @@ public class SpringSecurityConfig {
 	@Lazy
 	private UserService userService;
 	
-	@Autowired
-	private UserRepository userRepository;
 	
-	
-	@Value("${jwt.secret}")
-	private String jwtKey; 
+
 	
 	 public final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -43,7 +39,6 @@ public class SpringSecurityConfig {
 		return http
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session
-			    		   
 			    		   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))//.maximumSessions(1))
        .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/register/").permitAll()
@@ -68,6 +63,7 @@ public class SpringSecurityConfig {
 //    }
 	
 	@Bean
+	@Lazy
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }

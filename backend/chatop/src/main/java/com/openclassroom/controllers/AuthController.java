@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.openclassroom.dto.UserLoggedDTO;
 import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
-import com.openclassroom.models.UserModel;
 import com.openclassroom.services.AuthService;
 import com.openclassroom.services.JWTokenService;
-import com.openclassroom.services.UserService;
 
 import jakarta.validation.Valid;
 
@@ -25,20 +23,14 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public class AuthController {
 	
-private JWTokenService jWTokenService;
 
-@Autowired
-private UserService userService;
 
 @Autowired
 private AuthService authService;
 	
-	private final AuthenticationManager authenticationManager;
+	//private final AuthenticationManager authenticationManager;
 
 	public AuthController(AuthenticationManager authenticationManager, JWTokenService jWTokenService) {
-		
-		this.authenticationManager = authenticationManager;
-		this.jWTokenService = jWTokenService;
 		System.out.println("AuthController:constructor..."+authenticationManager.getClass().toString());
 	}
 	
@@ -70,15 +62,14 @@ private AuthService authService;
 	
 	@PostMapping(value ="/login", consumes={"application/json"})
 	@ResponseBody
-    public ResponseEntity<String> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+    public String login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
 		String token = authService.authenticating(userLoginDTO);
-		return ResponseEntity.ok(token);
+		return token;
     }
 	
 	
 	@GetMapping("/me")
 	public UserLoggedDTO getMe(Authentication principal) {
-		//System.out.println(principal.getPrincipal());
 		return this.authService.me(principal);
 		
 	}

@@ -124,19 +124,19 @@ public class UserService implements UserDetailsService {
 	}
 	
 	
-	public UserModel loginUser(UserLoginDTO userLoginDTO) {
-//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword()));
-//		System.out.println("getPrincipal:"+authentication.getPrincipal());
-		String password_hash = BCrypt.hashpw(userLoginDTO.getPassword(), BCrypt.gensalt());
-		userLoginDTO.setPassword(password_hash);
-		System.out.println("userLoginDTO:"+userLoginDTO.toString());
-		UserModel userLogged = convertLoginToEntity(userLoginDTO);
-		System.out.println("userLogged:"+userLogged.toString());
-		//String jwt = jwtService.generateToken(userLogged);
-    	return userLogged;
-    	
-
-	}
+//	public UserModel loginUser(UserLoginDTO userLoginDTO) {
+////		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword()));
+////		System.out.println("getPrincipal:"+authentication.getPrincipal());
+//		String password_hash = BCrypt.hashpw(userLoginDTO.getPassword(), BCrypt.gensalt());
+//		userLoginDTO.setPassword(password_hash);
+//		System.out.println("userLoginDTO:"+userLoginDTO.toString());
+//		UserModel userLogged = convertLoginToEntity(userLoginDTO);
+//		System.out.println("userLogged:"+userLogged.toString());
+//		//String jwt = jwtService.generateToken(userLogged);
+//    	return userLogged;
+//    	
+//
+//	}
 	
 
 }

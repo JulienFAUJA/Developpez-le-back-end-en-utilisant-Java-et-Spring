@@ -27,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTokenService jwtService;
     private final UserService userService;
+    private UsernamePasswordAuthenticationToken authToken=null;
 
 
     public JwtAuthenticationFilter(JWTokenService jwtService, UserService userService) {
@@ -46,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
         	System.out.println("ERREUR TOKEN:"+authHeader);
         	System.out.println("Response:"+response.getClass().toString());
-            //filterChain.doFilter(request,response);
+            filterChain.doFilter(request,response);
             return;
         }
 
@@ -58,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = userService.loadUserByUsername(email);
             System.out.println("userDetails:"+userDetails.toString());
 
-            if(jwtService.isValid(token, email)) {
+            if(jwtService.isValid(token, email) && (authToken==null || authToken.isAuthenticated()==false)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );
@@ -72,6 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+        return;
 
 
     }

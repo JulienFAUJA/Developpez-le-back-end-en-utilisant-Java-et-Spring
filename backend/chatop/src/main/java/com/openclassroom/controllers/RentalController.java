@@ -3,7 +3,6 @@ package com.openclassroom.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassroom.dto.RentalDTO;
-import com.openclassroom.models.RentalModel;
 import com.openclassroom.services.RentalService;
 import com.openclassroom.services.UserService;
 
@@ -24,8 +22,7 @@ public class RentalController {
 	@Autowired
     private RentalService rentalService;
 	
-	@Autowired
-    private UserService userService;
+
    
 	
     

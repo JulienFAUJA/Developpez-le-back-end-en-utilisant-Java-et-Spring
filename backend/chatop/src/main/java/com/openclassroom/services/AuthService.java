@@ -25,16 +25,16 @@ public class AuthService {
 	
 	
 	 private final PasswordEncoder passwordEncoder;
-	    private final JWTokenService jwtService;
+	 private final JWTokenService jwtService;
 
 
-	    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-	    public AuthService(PasswordEncoder passwordEncoder, JWTokenService jwtService, AuthenticationManager authenticationManager) {
-	        this.passwordEncoder = passwordEncoder;
-	        this.jwtService = jwtService;
-	        this.authenticationManager = authenticationManager;
-	    }
+    public AuthService(PasswordEncoder passwordEncoder, JWTokenService jwtService, AuthenticationManager authenticationManager) {
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
     
     public UserLoggedDTO me(Authentication principal){
     	System.out.println("principal:"+principal);
@@ -62,18 +62,23 @@ public class AuthService {
 
     public String authenticating(UserLoginDTO request) {
     	    	System.out.println("request:"+request.toString());
-    	    
+    	    try {
     	    	Authentication authentication=authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        passwordEncoder.encode(request.getPassword())
-                )
-        );
+    	                new UsernamePasswordAuthenticationToken(
+    	                        request.getEmail(),
+    	                        passwordEncoder.encode(request.getPassword())
+    	                )
+    	        );
     	    	System.out.println("authentication:"+authentication.toString());
-        UserModel user = (UserModel)authentication.getPrincipal();
-        System.out.println("principal:"+user.toString());
-        //userRepository.findByUsername(request.getUsername()).orElseThrow();
-        String jwt = jwtService.generateToken(user.getUsername());
+    	        UserModel user = (UserModel)authentication.getPrincipal();
+    	        System.out.println("principal:"+user.toString());
+    	        //userRepository.findByUsername(request.getUsername()).orElseThrow();
+    	    }
+    	    catch(Exception ex) {
+    	    	System.out.println("Exception:"+ex.getMessage());
+    	    }
+    	    	
+        String jwt = jwtService.generateToken(request.getEmail());
        
 
 
