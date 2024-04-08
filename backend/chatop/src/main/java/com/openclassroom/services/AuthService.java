@@ -1,5 +1,7 @@
 package com.openclassroom.services;
 
+import java.security.Principal;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,9 +38,10 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
     
-    public UserLoggedDTO me(Authentication principal){
+    
+    public UserLoggedDTO me(Principal principal){
     	System.out.println("principal:"+principal);
-    	UserModel userAuthorized = (UserModel) principal.getPrincipal();
+    	UserModel userAuthorized = (UserModel) principal;
         Integer id = userAuthorized.getId();
         UserModel user = this.userRepository.findById(id).orElse(null);
         return this.modelMapper.map(user, UserLoggedDTO.class);
@@ -46,16 +49,15 @@ public class AuthService {
     
     
     public String register(UserRegisterDTO request) {
-
-        // check if user already exist. if exist than authenticate the user
+    	UserModel user = new UserModel(request.getEmail(), request.getName(), passwordEncoder.encode(request.getPassword()));
+    	String jwt = jwtService.generateToken(request.getEmail());
+        // vérifie si existe déjà
         if(userRepository.findByUsername(request.getEmail()).isPresent()) {
-            return "User already exist";
+        	System.out.println("User already exist:"+request.toString());
         }
-
-        UserModel user = new UserModel(request.getEmail(), request.getName(), passwordEncoder.encode(request.getPassword()));
-        
-        user = userRepository.save(user);
-        String jwt = jwtService.generateToken(request.getEmail());
+        else {
+        	user = userRepository.save(user);
+        }
         return jwt;
 
     }
@@ -66,7 +68,7 @@ public class AuthService {
     	    	Authentication authentication=authenticationManager.authenticate(
     	                new UsernamePasswordAuthenticationToken(
     	                        request.getEmail(),
-    	                        passwordEncoder.encode(request.getPassword())
+    	                        request.getPassword()
     	                )
     	        );
     	    	System.out.println("authentication:"+authentication.toString());
@@ -75,7 +77,7 @@ public class AuthService {
     	        //userRepository.findByUsername(request.getUsername()).orElseThrow();
     	    }
     	    catch(Exception ex) {
-    	    	System.out.println("Exception:"+ex.getMessage());
+    	    	System.out.println("[Exception][AuthService][authenticating]:"+ex.getMessage());
     	    }
     	    	
         String jwt = jwtService.generateToken(request.getEmail());

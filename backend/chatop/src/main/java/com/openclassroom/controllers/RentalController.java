@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassroom.dto.RentalDTO;
@@ -29,8 +30,10 @@ public class RentalController {
 	
   
 	
-	@GetMapping
+	@GetMapping(value ="", consumes={"application/json"})
+	@ResponseBody
 	public List<RentalDTO> getAllRentals() {
+		System.out.println("Rentals...");
 		List<RentalDTO> rentals = new ArrayList<>();
 		rentalService.getRentals().forEach(r -> rentals.add(r));
 		System.out.println("RentalController:"+rentals);
