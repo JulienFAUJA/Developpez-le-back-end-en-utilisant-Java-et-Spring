@@ -1,12 +1,15 @@
 package com.openclassroom.models;
 
+import java.security.Principal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
@@ -19,7 +22,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class UserModel implements UserDetails{
+public class UserModel implements UserDetails, Principal{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +62,7 @@ public class UserModel implements UserDetails{
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -122,7 +125,9 @@ public class UserModel implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.emptyList();
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		return authorities;
 	}
 
 

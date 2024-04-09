@@ -22,12 +22,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component 
-@Lazy
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTokenService jwtService;
     private final UserService userService;
-    private UsernamePasswordAuthenticationToken authToken=null;
+    private UsernamePasswordAuthenticationToken authToken;
 
 
     public JwtAuthenticationFilter(JWTokenService jwtService, UserService userService) {
@@ -41,6 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
              @NonNull HttpServletResponse response,
              @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+    	
+    	if (request.getServletPath().contains("/api/auth/register")) {
+    	      filterChain.doFilter(request, response);
+    	      return;
+    	    }
 
         String authHeader = request.getHeader("Authorization");
         System.out.println("\n\nauthHeader token:"+authHeader);
@@ -59,20 +63,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = userService.loadUserByUsername(email);
             System.out.println("userDetails:"+userDetails.toString());
-
-            if(jwtService.isValid(token, email) && (authToken==null || authToken.isAuthenticated()==false)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails.getUsername(), userDetails.getPassword()
-                );
+            if(jwtService.isValid(token, email)) {
+            	if(authToken==null) {
+                	System.out.print("[JwtAuthenticationFilter][doFilterInternal][Before:UsernamePasswordAuthenticationToken]\n");
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,null, userDetails.getAuthorities());
+                	System.out.println("[JwtAuthenticationFilter][doFilterInternal][After:UsernamePasswordAuthenticationToken] authToken:"+authToken.toString()+"\n");
+                	System.out.println("[authToken!=null- Before]:"+(authToken!=null)+"\n");
+                	authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+//                	if(authToken.getDetails()==null) {
+//                		setDetailContext(request, authToken);
+//                	}
+                	
+                }
+                
+                
+            	else if(authToken!=null && authToken.getDetails()==null) {
+            		setDetailContext(request, authToken);
+            	}
             }
-            if(authToken!=null) {
-            	authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("authToken:"+authToken.toString());
-            }
+            
             
         }
         filterChain.doFilter(request, response);
@@ -80,4 +93,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     }
+
+	private void setDetailContext(HttpServletRequest request, UsernamePasswordAuthenticationToken authToken) {
+		System.out.println("[authToken.setDetails - Before]:"+authToken.toString());
+		authToken.setDetails(
+		        new WebAuthenticationDetailsSource().buildDetails(request)
+		);
+		System.out.println("[authToken.setDetails - After]:"+authToken.toString());
+
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		System.out.println("authToken:"+authToken.toString());
+	}
 }

@@ -1,9 +1,8 @@
 package com.openclassroom.controllers;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,16 +52,15 @@ private AuthService authService;
 	
 	
 	@PostMapping(value ="/login", consumes={"application/json"})
-	@ResponseBody
-    public String login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+    public String login(@RequestBody UserLoginDTO userLoginDTO) {
 		String token = authService.authenticating(userLoginDTO);
 		return token;
     }
 	
 	
-	@GetMapping("/me")
-	public UserLoggedDTO getMe(Principal principal) {
-		return this.authService.me(principal);
+	@GetMapping(value ="/me")
+	public UserLoggedDTO getMe() {
+		return this.authService.me();
 		
 	}
 	

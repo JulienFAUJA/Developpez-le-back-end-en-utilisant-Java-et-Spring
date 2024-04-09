@@ -1,12 +1,14 @@
 package com.openclassroom.services;
 
-import java.security.Principal;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +40,36 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
     
+    public UserModel getCurrentUser(String label){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("authentication:"+label+authentication.toString());
+        UserModel userModel = (UserModel) authentication.getPrincipal();
+        return userModel;
+    }
     
-    public UserLoggedDTO me(Principal principal){
-    	System.out.println("principal:"+principal);
-    	UserModel userAuthorized = (UserModel) principal;
-        Integer id = userAuthorized.getId();
-        UserModel user = this.userRepository.findById(id).orElse(null);
+    public Authentication setCurrentUser(String email, String password){
+    	UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+    			email,
+    			password
+        );
+    	SecurityContext contextHolder = SecurityContextHolder.getContext();
+    	Authentication authentication = contextHolder.getAuthentication();
+    	SecurityContextHolder.getContext().setAuthentication(authToken);
+    	
+        System.out.println("contextHolder:"+contextHolder.toString());
+        System.out.println("authentication - Before:"+authentication.toString());
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("authentication - After:"+authentication.toString());
+        System.out.println("authToken:"+authToken.toString());
+        Authentication userModel = authentication;
+        return userModel;
+    }
+    
+    public UserLoggedDTO me(){
+    	UserModel UserCurrent = getCurrentUser("/Me");
+    	System.out.println("UserCurrent:"+UserCurrent.toString());
+        String email = UserCurrent.getUsername();
+        UserModel user = this.userRepository.findByUsername(email).orElse(null);
         return this.modelMapper.map(user, UserLoggedDTO.class);
     }
     
@@ -58,33 +84,53 @@ public class AuthService {
         else {
         	user = userRepository.save(user);
         }
+        System.out.println("jwt:"+jwt);
         return jwt;
 
     }
 
     public String authenticating(UserLoginDTO request) {
     	    	System.out.println("request:"+request.toString());
+    	    	Authentication authentication;
+    	    	//getCurrentUser("start of:authenticating");
+    	    	//setCurrentUser(request.getEmail(),request.getPassword());
     	    try {
-    	    	Authentication authentication=authenticationManager.authenticate(
-    	                new UsernamePasswordAuthenticationToken(
-    	                        request.getEmail(),
-    	                        request.getPassword()
-    	                )
-    	        );
+    	    	UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                );
+    	    	authentication = authenticationManager.authenticate(authToken);
+    	    	SecurityContextHolder.getContext().setAuthentication(authToken);
+    	    	//UserModel userModel = userRepository.findByUsername(request.getEmail()).orElseThrow();
+    	    	
+    	    	System.out.println("authToken:"+authToken.toString());
+    	    	
     	    	System.out.println("authentication:"+authentication.toString());
-    	        UserModel user = (UserModel)authentication.getPrincipal();
-    	        System.out.println("principal:"+user.toString());
-    	        //userRepository.findByUsername(request.getUsername()).orElseThrow();
+    	    	System.out.println("getContext:"+SecurityContextHolder.getContext());
+    	        //UserModel user = (UserModel)authentication.getPrincipal();
+    	        //System.out.println("principal:"+user.toString());
+    	        
+    	        
+    	        //getCurrentUser("end of:authenticating");
+    	        
     	    }
     	    catch(Exception ex) {
     	    	System.out.println("[Exception][AuthService][authenticating]:"+ex.getMessage());
+    	    	return ex.getMessage();
     	    }
+    	    SecurityContextHolder.getContext().setAuthentication(authentication);
+    	    UserModel user = (UserModel)authentication.getPrincipal();
+    	    String email = user.getUsername();
+    	    String jwt = jwtService.generateToken(email);
+    	    System.out.println("jwt:"+jwt);
+    	    System.out.println("userModel:"+user.toString());
+    	    return jwt;
     	    	
-        String jwt = jwtService.generateToken(request.getEmail());
+        
        
 
 
-        return jwt;
+        
 
     }
   
