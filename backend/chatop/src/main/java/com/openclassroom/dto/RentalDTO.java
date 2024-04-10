@@ -3,6 +3,9 @@ package com.openclassroom.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.openclassroom.models.RentalModel;
 
@@ -15,7 +18,7 @@ public class RentalDTO implements Serializable{
     private String name;
     private Double surface;
     private Double price;
-    private String picture;
+    private MultipartFile picture;
     private String description;
     private Integer owner_id;
     private Timestamp created_at;
@@ -53,11 +56,11 @@ public class RentalDTO implements Serializable{
  		this.price = price;
  	}
 
- 	public String getPicture() {
- 		return picture;
- 	}
+ 	public MultipartFile getPicture() {
+ 	    return picture;
+ 	  }
 
- 	public void setPicture(String picture) {
+ 	public void setPicture(MultipartFile picture) {
  		this.picture = picture;
  	}
 
@@ -99,37 +102,56 @@ public class RentalDTO implements Serializable{
     	
     }
     
-    public RentalDTO(RentalModel rental) {
-    	this.id = rental.getId();
-		this.name = rental.getName();
-		this.surface = rental.getSurface();
-		this.price = rental.getPrice();
-		this.picture = rental.getPicture();
-		this.description = rental.getDescription();
-		this.owner_id = rental.getOwner_id();
-		this.created_at = rental.getCreated_at();
-		this.updated_at = rental.getUpdated_at();
-    }
+//    public RentalDTO(RentalModel rental) {
+//    	this.id = rental.getId();
+//		this.name = rental.getName();
+//		this.surface = rental.getSurface();
+//		this.price = rental.getPrice();
+//		this.picture = rental.getPicture();
+//		this.description = rental.getDescription();
+//		this.owner_id = rental.getOwner_id();
+//		this.created_at = rental.getCreated_at();
+//		this.updated_at = rental.getUpdated_at();
+//    }
     
-    public RentalDTO(Integer id, String name, Double surface, Double price, String picture, String description,
-			Integer owner_id, Timestamp created_at, Timestamp updated_at) {
-    	this.id = id;
-		this.name = name;
-		this.surface = surface;
-		this.price = price;
-		this.picture = picture;
-		this.description = description;
-		this.owner_id = owner_id;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-    }
+//    public RentalDTO(Integer id, String name, Double surface, Double price, String picture, String description,
+//			Integer owner_id, Timestamp created_at, Timestamp updated_at) {
+//    	this.id = id;
+//		this.name = name;
+//		this.surface = surface;
+//		this.price = price;
+//		this.picture = picture;
+//		this.description = description;
+//		this.owner_id = owner_id;
+//		this.created_at = created_at;
+//		this.updated_at = updated_at;
+//    }
 
 	@Override
 	public String toString() {
-		return "RentalDTO [id=" + id + ", name=" + name + ", surface=" + surface + ", price=" + price + ", picture="
-				+ picture + ", owner_id=" + owner_id + ", description=" + description + ", created_at=" + created_at
-				+ ", updated_at=" + updated_at + "]";
+		return "RentalDTO [\n"+
+				"id=" + id + ",\n"+
+				"name=" + name + ",\n"+
+				"surface=" + surface + ",\n"+
+				"price=" + price + ",\n"+
+				"picture=" + picture + ",\n"+
+				"owner_id=" + owner_id + ",\n"+
+				"description=" + description + ",\n"+
+				"created_at=" + created_at + ",\n"+
+				"updated_at=" + updated_at + "\n]";
 	}
+	
+	@Override
+	  public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (!(o instanceof RentalDTO dto)) return false;
+	    return surface == dto.surface && price == dto.price && owner_id == dto.owner_id && Objects.equals(id, dto.id) && Objects.equals(name, dto.name) && Objects.equals(picture, dto.picture) && Objects.equals(description, dto.description) && Objects.equals(created_at, dto.created_at) && Objects.equals(updated_at, dto.updated_at);
+	  }
+
+	  @Override
+	  public int hashCode() {
+	    return Objects.hash(id, name, surface, price, picture, description, owner_id, created_at, updated_at);
+	  }
     
     
 }

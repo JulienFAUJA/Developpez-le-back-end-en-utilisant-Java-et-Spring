@@ -1,5 +1,6 @@
 package com.openclassroom.models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "rentals")
-public class RentalModel {
+public class RentalModel implements Serializable{
 
 	@Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)

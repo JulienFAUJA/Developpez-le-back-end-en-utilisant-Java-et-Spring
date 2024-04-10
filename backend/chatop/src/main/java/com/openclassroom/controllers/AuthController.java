@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassroom.dto.TokenDTO;
 import com.openclassroom.dto.UserLoggedDTO;
 import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
@@ -35,10 +36,9 @@ private AuthService authService;
 	
 	@PostMapping(value ="/register")
 	@ResponseBody
-	public String postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+	public TokenDTO postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
 		System.out.print("[postRegister] userRegisterDTO:"+userRegisterDTO.toString());
-		String token = authService.register(userRegisterDTO);
-
+		TokenDTO token = new TokenDTO(authService.register(userRegisterDTO));
 		return token;
 	}
 	
@@ -46,8 +46,8 @@ private AuthService authService;
 	
 	
 	@PostMapping(value ="/login", consumes={"application/json"})
-    public String login(@RequestBody UserLoginDTO userLoginDTO) {
-		String token = authService.authenticating(userLoginDTO);
+    public TokenDTO login(@RequestBody UserLoginDTO userLoginDTO) {
+		TokenDTO token = new TokenDTO(authService.authenticating(userLoginDTO));
 		return token;
     }
 	

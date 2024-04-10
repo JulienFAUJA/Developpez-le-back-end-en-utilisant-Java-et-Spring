@@ -48,6 +48,7 @@ public class RentalService {
 	}
 	
 	public String postRental(RentalDTO rentalDto) {
+		System.out.println("rentalDto:"+rentalDto.toString());
 		RentalModel rental = modelMapper.map(rentalDto, RentalModel.class);
         // vérifie les erreurs
         if(rental==null) {

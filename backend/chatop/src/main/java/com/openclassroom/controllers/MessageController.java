@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassroom.dto.MessageDTO;
@@ -31,7 +32,8 @@ public class MessageController {
 	@Autowired
 	private JWTokenService jwtService;
 	
-	@PostMapping(value ="", consumes={"application/json"})
+	@PostMapping
+	@ResponseBody
 	public String postMessage(@Valid @RequestBody MessageDTO messageDTO) {
 		String messageCreated = messageService.postMessage(messageDTO);
 		System.out.print("MessageController:"+messageCreated.toString());

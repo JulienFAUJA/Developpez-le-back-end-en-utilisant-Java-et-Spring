@@ -62,6 +62,7 @@ public class RentalController {
 	@PostMapping()
 	@ResponseBody
 	public String postRental(@Valid @RequestBody RentalDTO rentalDTO) {
+		System.out.println("rentalDto:"+rentalDTO.toString());
 		return this.rentalService.postRental(rentalDTO);
 	}
 	

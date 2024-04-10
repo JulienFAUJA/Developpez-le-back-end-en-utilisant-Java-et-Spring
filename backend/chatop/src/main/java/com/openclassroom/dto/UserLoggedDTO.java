@@ -8,7 +8,7 @@ import lombok.Data;
 public class UserLoggedDTO {
 	
 	private Integer id;
-    private String username;
+    private String email;
     private String name;
     private Timestamp created_at;
     private Timestamp updated_at;
@@ -48,17 +48,17 @@ public class UserLoggedDTO {
     
     
     public String getUsername() {
-		return username;
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String email) {
+		this.email = email;
 	}
     
     
 	@Override
 	public String toString() {
-		return "UserLoggedDTO [id=" + id + ", username=" + username + ", name=" + name + ", created_at=" + created_at
+		return "UserLoggedDTO [id=" + id + ", email=" + email + ", name=" + name + ", created_at=" + created_at
 				+ ", updated_at=" + updated_at + "]";
 	}
 
