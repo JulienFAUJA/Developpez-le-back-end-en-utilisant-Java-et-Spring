@@ -54,7 +54,9 @@ private AuthService authService;
 	
 	@GetMapping(value ="/me")
 	public UserLoggedDTO getMe() {
-		return this.authService.me();
+		UserLoggedDTO userLoggedDto = this.authService.me();
+		System.out.println("userLoggedDto:retourné dans Angular:"+userLoggedDto.toString());
+		return userLoggedDto;
 		
 	}
 	

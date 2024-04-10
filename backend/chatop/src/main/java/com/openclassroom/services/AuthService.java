@@ -69,7 +69,7 @@ public class AuthService {
     	UserModel UserCurrent = getCurrentUser("/Me");
     	System.out.println("UserCurrent:"+UserCurrent.toString());
         String email = UserCurrent.getUsername();
-        UserModel user = this.userRepository.findByUsername(email).orElse(null);
+        UserModel user = this.userRepository.findByEmail(email).orElse(null);
         UserLoggedDTO userLoggedDto = modelMapper.map(user, UserLoggedDTO.class);
         System.out.println("UserModel byEmail:"+user.toString()+"UserCurrent:"+UserCurrent.toString()+"\nuserLoggedDto:"+userLoggedDto.toString());
         return userLoggedDto;
@@ -80,7 +80,7 @@ public class AuthService {
     	UserModel user = new UserModel(request.getEmail(), request.getName(), passwordEncoder.encode(request.getPassword()));
     	String jwt = jwtService.generateToken(request.getEmail());
         // vérifie si existe déjà
-        if(userRepository.findByUsername(request.getEmail()).isPresent()) {
+        if(userRepository.findByEmail(request.getEmail()).isPresent()) {
         	System.out.println("User already exist:"+request.toString());
         }
         else {

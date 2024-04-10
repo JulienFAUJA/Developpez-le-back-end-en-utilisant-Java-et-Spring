@@ -27,8 +27,8 @@ public class UserModel implements UserDetails, Principal{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name="email", unique=true)
-	private String username;
+	@Column(unique=true)
+	private String email;
 	private String name;
 	private String password;
 	@CreationTimestamp
@@ -45,14 +45,14 @@ public class UserModel implements UserDetails, Principal{
 		this.id = id;
 	}
 
-	@Override
-	public String getUsername() {
-		return username;
+	
+	public String getEmail() {
+		return email;
 	}
 	
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getName() {
@@ -93,35 +93,35 @@ public class UserModel implements UserDetails, Principal{
 	
 	@Override
 	public String toString() {
-		return "UserModel [id=" + id + ", username=" + username + ", name=" + name + ", password=" + password
+		return "UserModel [id=" + id + ", email=" + email + ", name=" + name + ", password=" + password
 				+ ", created_at=" + created_at + ", updated_at=" + updated_at + "]";
 	}
 
-	public UserModel(String username, String password) {
-		this.username = username;
+	public UserModel(String email, String password) {
+		this.email = email;
 		this.password = password;
 	}
-	public UserModel(String username, String name, String password) {
-		this.username = username;
+	public UserModel(String email, String name, String password) {
+		this.email = email;
 		this.name = name;
 		this.password = password;
 	}
-	public UserModel(Integer id, String username, String name, String password, Timestamp created_at, Timestamp updated_at) {
+	public UserModel(Integer id, String email, String name, String password, Timestamp created_at, Timestamp updated_at) {
 		this.id=id;
-		this.username = username;
+		this.email = email;
 		this.name = name;
 		this.password = password;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
 	
-	public UserModel(String username, String name, String password, Timestamp created_at, Timestamp updated_at) {
-		this.username = username;
-		this.name = name;
-		this.password = password;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-	}
+//	public UserModel(String username, String name, String password, Timestamp created_at, Timestamp updated_at) {
+//		this.username = username;
+//		this.name = name;
+//		this.password = password;
+//		this.created_at = created_at;
+//		this.updated_at = updated_at;
+//	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -150,6 +150,11 @@ public class UserModel implements UserDetails, Principal{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
 	}
 	
 	
