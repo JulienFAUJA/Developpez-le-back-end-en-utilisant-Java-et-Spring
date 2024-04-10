@@ -1,5 +1,6 @@
 package com.openclassroom.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class RentalController {
 	
 	@PostMapping()
 	@ResponseBody
-	public String postRental(@Valid @RequestBody RentalDTO rentalDTO) {
+	public String postRental(@Valid @RequestBody RentalDTO rentalDTO) throws Exception {
 		System.out.println("rentalDto:"+rentalDTO.toString());
 		return this.rentalService.postRental(rentalDTO);
 	}

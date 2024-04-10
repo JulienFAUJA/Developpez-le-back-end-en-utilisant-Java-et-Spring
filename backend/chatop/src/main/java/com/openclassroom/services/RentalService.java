@@ -1,5 +1,6 @@
 package com.openclassroom.services;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.models.RentalModel;
-import com.openclassroom.models.UserModel;
+import org.springframework.web.multipart.MultipartFile;
 import com.openclassroom.repositories.RentalRepository;
 
 @Service
@@ -22,6 +23,9 @@ public class RentalService {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+    private FileService fileService;
 	
 	
     private RentalModel convertToEntity(RentalDTO rentalDto) {
@@ -47,14 +51,23 @@ public class RentalService {
 		return convertToDTO(rental.orElseThrow());
 	}
 	
-	public String postRental(RentalDTO rentalDto) {
+	public String postRental(RentalDTO rentalDto) throws IOException {
 		System.out.println("rentalDto:"+rentalDto.toString());
 		RentalModel rental = modelMapper.map(rentalDto, RentalModel.class);
-        // vérifie les erreurs
-        if(rental==null) {
-        	System.out.println("rental is null");
-        	return "";
-        }
+		try {
+			if (rentalDto.getPicture() != null && !rentalDto.getPicture().isEmpty()) {
+	            String fileUrl;
+				fileUrl = fileService.save(rentalDto.getPicture());
+				 rental.setPicture(fileUrl);
+	        } else {
+	        	rental.setPicture("noPicture");
+	        }
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+			rental.setPicture("noPicture");
+			return "";
+		}
         rentalRepository.save(rental);
 		return "Annonce postée avec succès..."; 		
 	}
