@@ -70,7 +70,9 @@ public class AuthService {
     	System.out.println("UserCurrent:"+UserCurrent.toString());
         String email = UserCurrent.getUsername();
         UserModel user = this.userRepository.findByUsername(email).orElse(null);
-        return this.modelMapper.map(user, UserLoggedDTO.class);
+        UserLoggedDTO userLoggedDto = modelMapper.map(user, UserLoggedDTO.class);
+        System.out.println("UserModel byEmail:"+user.toString()+"UserCurrent:"+UserCurrent.toString()+"\nuserLoggedDto:"+userLoggedDto.toString());
+        return userLoggedDto;
     }
     
     
@@ -92,8 +94,6 @@ public class AuthService {
     public String authenticating(UserLoginDTO request) {
     	    	System.out.println("request:"+request.toString());
     	    	Authentication authentication;
-    	    	//getCurrentUser("start of:authenticating");
-    	    	//setCurrentUser(request.getEmail(),request.getPassword());
     	    try {
     	    	UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -101,18 +101,11 @@ public class AuthService {
                 );
     	    	authentication = authenticationManager.authenticate(authToken);
     	    	SecurityContextHolder.getContext().setAuthentication(authToken);
-    	    	//UserModel userModel = userRepository.findByUsername(request.getEmail()).orElseThrow();
     	    	
     	    	System.out.println("authToken:"+authToken.toString());
     	    	
     	    	System.out.println("authentication:"+authentication.toString());
     	    	System.out.println("getContext:"+SecurityContextHolder.getContext());
-    	        //UserModel user = (UserModel)authentication.getPrincipal();
-    	        //System.out.println("principal:"+user.toString());
-    	        
-    	        
-    	        //getCurrentUser("end of:authenticating");
-    	        
     	    }
     	    catch(Exception ex) {
     	    	System.out.println("[Exception][AuthService][authenticating]:"+ex.getMessage());

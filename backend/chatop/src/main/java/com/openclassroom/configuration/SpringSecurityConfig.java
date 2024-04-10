@@ -43,13 +43,10 @@ public class SpringSecurityConfig{
 				.sessionManagement(session -> session
 			    		   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
        .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST,"/api/auth/register").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
-//                .requestMatchers("/auth/me").authenticated()
-//                .requestMatchers("/api/rentals").authenticated()
-//                .requestMatchers("/api/users/**").authenticated()
-//                .requestMatchers("/api/messages/**").authenticated()
+                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+              
                 .anyRequest().authenticated())
+       //.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
        .authenticationProvider(authenticationProvider)
        
         // Add JWT token filter

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.models.RentalModel;
+import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.RentalRepository;
 
 @Service
@@ -46,8 +47,15 @@ public class RentalService {
 		return convertToDTO(rental.orElseThrow());
 	}
 	
-//	public RentalModel addRental(RentalModel rental) {
-//		return rentalRepository.saveAll(rental);		
-//	}
+	public String postRental(RentalDTO rentalDto) {
+		RentalModel rental = modelMapper.map(rentalDto, RentalModel.class);
+        // vérifie les erreurs
+        if(rental==null) {
+        	System.out.println("rental is null");
+        	return "";
+        }
+        rentalRepository.save(rental);
+		return "Annonce postée avec succès..."; 		
+	}
 
 }

@@ -30,13 +30,13 @@ public class MessageService {
     }
     
     
-    public MessageModel postMessage(MessageDTO messageDTO) {
+    public String postMessage(MessageDTO messageDTO) {
 		System.out.println("messageDTO:"+messageDTO.toString());
 		messageDTO.setCreated_atNow();
 		messageDTO.setUpdated_atNow();
 		MessageModel messageCreated = modelMapper.map(messageDTO, MessageModel.class);
 		messageRepository.save(messageCreated);
-    	return messageCreated;
+    	return "Message créé avec succès...";
     }
    
 	

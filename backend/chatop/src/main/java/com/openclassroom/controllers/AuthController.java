@@ -19,7 +19,7 @@ import com.openclassroom.services.JWTokenService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 	
 
@@ -38,13 +38,7 @@ private AuthService authService;
 	public String postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
 		System.out.print("[postRegister] userRegisterDTO:"+userRegisterDTO.toString());
 		String token = authService.register(userRegisterDTO);
-//		UserModel userCreated = userService.registerUser(userRegisterDTO);
-//		System.out.print("authController2:"+userCreated.toString());
-//		if (userCreated != null) {
-//	        return jWTokenService.provideJwt(userCreated);
-//	    } else {
-//	        return "";
-//	    }
+
 		return token;
 	}
 	

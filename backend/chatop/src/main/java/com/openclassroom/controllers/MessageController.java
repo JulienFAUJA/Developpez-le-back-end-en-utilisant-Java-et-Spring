@@ -19,7 +19,7 @@ import com.openclassroom.services.MessageService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/api/messages")
 public class MessageController {	
 	
 	@Autowired
@@ -33,13 +33,9 @@ public class MessageController {
 	
 	@PostMapping(value ="", consumes={"application/json"})
 	public String postMessage(@Valid @RequestBody MessageDTO messageDTO) {
-		MessageModel messageCreated = messageService.postMessage(messageDTO);
+		String messageCreated = messageService.postMessage(messageDTO);
 		System.out.print("MessageController:"+messageCreated.toString());
-		if (messageCreated != null) {
-	        return messageCreated.getMessage()+" "+messageCreated.getUser_id();
-	    } else {
-	        return "";
-	    }
+		return messageCreated;
 	}
 	
 	@GetMapping("/all")

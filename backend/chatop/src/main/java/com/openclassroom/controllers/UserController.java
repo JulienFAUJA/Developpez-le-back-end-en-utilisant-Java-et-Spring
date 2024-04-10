@@ -11,7 +11,7 @@ import com.openclassroom.dto.UserDTO;
 import com.openclassroom.services.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 	
 	@Autowired
