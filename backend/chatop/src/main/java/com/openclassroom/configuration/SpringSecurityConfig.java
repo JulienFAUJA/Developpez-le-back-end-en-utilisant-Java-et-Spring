@@ -1,6 +1,9 @@
 package com.openclassroom.configuration;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,7 +24,8 @@ public class SpringSecurityConfig{
 	@Autowired
 	private UserService userService;
 
-	
+	 @Value("${file_storage.location}")
+	 private String file_storage_location;
 
 	
 	 public final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -38,15 +42,19 @@ public class SpringSecurityConfig{
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		String root_dir = System.getProperty("user.dir");
+		String static_folder_path = root_dir+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static";
+		String static_folder_path2 = LocationHelpers.STATIC_DIR;
+		System.out.println("file_storage_location:"+file_storage_location+"\nroot_dir:"+root_dir+"\nstatic_folder_path:"+static_folder_path+"\nstatic_folder_path2:"+static_folder_path2);
 		return http
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session
 			    		   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
        .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register", "/api/auth/login", "/chatop/src/main/resources/static/").permitAll()
+                .requestMatchers(LocationHelpers.REGISTER_URI, LocationHelpers.LOGIN_URI, LocationHelpers.STATIC_DIR).permitAll()
               
-                .anyRequest().authenticated())
-       //.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+                //.anyRequest().authenticated())
+       .anyRequest().permitAll())
        .authenticationProvider(authenticationProvider)
        
         // Add JWT token filter

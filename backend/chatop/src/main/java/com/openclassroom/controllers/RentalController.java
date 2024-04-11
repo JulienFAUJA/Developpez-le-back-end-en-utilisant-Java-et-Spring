@@ -4,21 +4,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.openclassroom.dto.RentalDTO;
+import com.openclassroom.dto.RentalFormDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.services.RentalService;
 import com.openclassroom.services.UserService;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,12 +39,12 @@ public class RentalController {
 
 	@GetMapping
 	@ResponseBody
-	public List<RentalDTO> getAllRentals() {
+	public List<RentalFormDTO> getAllRentals() {
 		System.out.println("Rentals...");
-		List<RentalDTO> rentals = new ArrayList<>();
-		rentalService.getRentals().forEach(r -> rentals.add(r));
-		System.out.println("RentalController:"+rentals);
-		return rentals;
+		List<RentalFormDTO> rentals_forms = new ArrayList<>();
+		rentalService.getRentals().forEach(r -> rentals_forms.add(r));
+		System.out.println("RentalController:"+rentals_forms);
+		return rentals_forms;
 	}
 	
     
@@ -55,16 +63,16 @@ public class RentalController {
 	
 
 	@GetMapping("{id}")
-	public RentalDTO getRentalById(@PathVariable("id") Integer id) {
+	public RentalFormDTO getRentalById(@PathVariable("id") Integer id) {
 		System.out.println("RentalController:"+rentalService.getRentalById(id).toString());
 		return rentalService.getRentalById(id);
 	}
 	
-	@PostMapping()
-	@ResponseBody
-	public String postRental(@Valid @RequestBody RentalDTO rentalDTO) throws Exception {
-		System.out.println("rentalDto:"+rentalDTO.toString());
-		return this.rentalService.postRental(rentalDTO);
+	@PostMapping
+	public String postRental(
+			 RentalDTO rentalDTO) throws IOException {
+		System.out.println("rentalDTO:"+rentalDTO.toString());
+		return this.rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
 	}
 	
 	@PutMapping("{id}")

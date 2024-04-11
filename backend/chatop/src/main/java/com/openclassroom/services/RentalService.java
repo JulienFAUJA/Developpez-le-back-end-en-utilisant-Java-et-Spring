@@ -8,10 +8,15 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.RentalDTO;
+import com.openclassroom.dto.RentalFormDTO;
 import com.openclassroom.models.RentalModel;
+import com.openclassroom.models.UserModel;
+
 import org.springframework.web.multipart.MultipartFile;
 import com.openclassroom.repositories.RentalRepository;
 
@@ -38,34 +43,44 @@ public class RentalService {
     
    
 	
-	public Iterable<RentalDTO> getRentals(){
-		List<RentalDTO> rentals = new ArrayList<>();
-		this.rentalRepository.findAll().forEach(r -> rentals.add(this.convertToDTO(r)));
+	public Iterable<RentalFormDTO> getRentals(){
+		List<RentalFormDTO> rentals = new ArrayList<>();
+		this.rentalRepository.findAll().forEach(r -> rentals.add(modelMapper.map(r, RentalFormDTO.class))); //this.convertToDTO(r)
 		return rentals;
 	}
 	
-	public RentalDTO getRentalById(Integer id){
+	public RentalFormDTO getRentalById(Integer id){
 		Optional<RentalModel> rental = this.rentalRepository.findById(id);
 		System.out.println("RentalService -> rental.orElseThrow():"+rental.orElseThrow());
 		System.out.println("RentalService -> convertToDTO(rental.orElseThrow()):"+convertToDTO(rental.orElseThrow()));
-		return convertToDTO(rental.orElseThrow());
+		return modelMapper.map(rental.orElseThrow(), RentalFormDTO.class);
 	}
 	
-	public String postRental(RentalDTO rentalDto) throws IOException {
-		System.out.println("rentalDto:"+rentalDto.toString());
-		RentalModel rental = modelMapper.map(rentalDto, RentalModel.class);
+	public String postRental(MultipartFile picture, RentalDTO rentalDTO) throws IOException {
+		System.out.println("rentalDTO:"+rentalDTO.toString());
+		RentalModel rental = modelMapper.map(rentalDTO, RentalModel.class);
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserModel currentUser = (UserModel) authentication.getPrincipal();
+        Integer currentUserId = currentUser.getId();
+		rental.CreateNow();
+		rental.setOwner_id(currentUserId);
+		String altPhotoText="Photo(s) non disponible(s)...";
 		try {
-			if (rentalDto.getPicture() != null && !rentalDto.getPicture().isEmpty()) {
-	            String fileUrl;
-				fileUrl = fileService.save(rentalDto.getPicture());
-				 rental.setPicture(fileUrl);
+			
+
+            // Mise à jour de l'URL du fichier dans l'objet RentalModel
+			if (picture != null && !picture.isEmpty()) {
+				// Enregistrement du fichier
+	            String fileUrl = fileService.save(picture);
+				rental.setPicture(fileUrl);
 	        } else {
-	        	rental.setPicture("noPicture");
+	        	rental.setPicture(altPhotoText);
 	        }
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
-			rental.setPicture("noPicture");
+			rental.setPicture(altPhotoText);
 			return "";
 		}
         rentalRepository.save(rental);

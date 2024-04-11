@@ -70,6 +70,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             userDetails,null, userDetails.getAuthorities());
                 	System.out.println("[JwtAuthenticationFilter][doFilterInternal][After:UsernamePasswordAuthenticationToken] authToken:"+authToken.toString()+"\n");
                 	System.out.println("[authToken!=null- Before]:"+(authToken!=null)+"\n");
+                	System.out.println("request:"+request.getContentType()+"\n");
                 	authToken.setDetails(
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );

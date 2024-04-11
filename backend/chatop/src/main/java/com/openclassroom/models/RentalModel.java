@@ -2,6 +2,7 @@ package com.openclassroom.models;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class RentalModel implements Serializable{
      private String picture;
      private String description;
      private Integer owner_id;
-     private Timestamp created_at;
-     private Timestamp updated_at;
+     private Instant created_at;
+     private Instant updated_at;
      
      
      
@@ -92,20 +93,26 @@ public class RentalModel implements Serializable{
  		this.owner_id = owner_id;
  	}
 
- 	public Timestamp getCreated_at() {
+ 	public Instant getCreated_at() {
  		return created_at;
  	}
 
- 	public void setCreated_at(Timestamp created_at) {
- 		this.created_at = created_at;
+ 	public void setCreated_at(Instant now) {
+ 		this.created_at = now;
  	}
 
- 	public Timestamp getUpdated_at() {
+ 	public Instant getUpdated_at() {
  		return updated_at;
  	}
 
- 	public void setUpdated_at(Timestamp updated_at) {
+ 	public void setUpdated_at(Instant updated_at) {
  		this.updated_at = updated_at;
+ 	}
+ 	
+ 	public void CreateNow() {
+ 		Instant now = Instant.now();
+ 		this.setCreated_at(now);
+ 		this.setUpdated_at(now);
  	}
      
      
@@ -121,7 +128,7 @@ public class RentalModel implements Serializable{
 	}
 
 	public RentalModel(Integer id, String name, Double surface, Double price, String picture, String description,
-			Integer owner_id, Timestamp created_at, Timestamp updated_at) {
+			Integer owner_id, Instant created_at, Instant updated_at) {
 
 		this.id = id;
 		this.name = name;
