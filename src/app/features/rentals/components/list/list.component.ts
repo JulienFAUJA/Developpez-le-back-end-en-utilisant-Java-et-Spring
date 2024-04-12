@@ -15,7 +15,8 @@ export class ListComponent {
   constructor(
     private sessionService: SessionService,
     private rentalsService: RentalsService
-  ) { }
+  ) { 
+  }
 
   get user(): User | undefined {
     return this.sessionService.user;

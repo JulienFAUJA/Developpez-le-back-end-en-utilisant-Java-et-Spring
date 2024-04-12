@@ -2,6 +2,7 @@ package com.openclassroom.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,7 +11,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.Resource;
 import com.openclassroom.configuration.LocationHelpers;
 
 @Service
@@ -18,12 +20,12 @@ public class FileService {
 	
 	private final Path rootLocation;
 
-    public FileService(@Value("${file_storage.location}") String storageLocation) {
+    public FileService() {
         //this.rootLocation = Paths.get(storageLocation);
         this.rootLocation = Paths.get(LocationHelpers.STATIC_DIR);
     }
     
-    public String save(MultipartFile file) throws IOException {
+    public String save(MultipartFile file) throws Exception {
         if (file.isEmpty()) {throw new IOException("[file.isEmpty] Erreur de l'enregistrement du fichier...");}
 
         String originalName = file.getOriginalFilename();
@@ -36,6 +38,7 @@ public class FileService {
             // Générer nouveau filename pour éviter d'écraser l'existant...
             String newFileName = baseName + "_" + UUID.randomUUID().toString() + fileExt;
             destFile = this.rootLocation.resolve(Paths.get(newFileName)).normalize().toAbsolutePath();
+            originalName=newFileName;
         }
 
         if (!destFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
@@ -45,7 +48,25 @@ public class FileService {
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, destFile, StandardCopyOption.REPLACE_EXISTING);
         }
-        return destFile.toString();
+        //return destFile.toString();
+        
+     // Retournez l'URL de l'image
+        return getImageUrl(originalName, destFile).toString();
+    }
+    
+    public Resource getImageUrl(String filename, Path destFile) throws Exception {
+    	Resource resource;
+		try {
+			resource = new UrlResource(destFile.toString());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			resource = new UrlResource("http://localhost:8080/api/images/" +filename);
+		}
+		System.out.println("resource:"+resource);
+    	return resource;
+    	//return "http://localhost:8080/api/images/" +filename;
+        //return LocationHelpers.STATIC_DIR+"/" + filename;
     }
 
 }

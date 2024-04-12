@@ -14,6 +14,9 @@ public class LocationHelpers {
 	public final static String USER_URI = LocationHelpers.ROOT_URI+"/user";
 	public final static String RENTALS_URI = LocationHelpers.ROOT_URI+"/rentals";
 	public final static String MESSAGES_URI = LocationHelpers.ROOT_URI+"/messages";
+	public final static String IMAGES_URI = LocationHelpers.ROOT_URI+"/images";
+	public final static String SWAGGER_UI_URI = "/swagger-ui/**";
+	public final static String SWAGGER_API_URI = "/v3/api-docs/**";
 	
 	public static String GeneratePath(String folder_names) {
 		String folder_tree_path = folder_names.replace(",", File.separator);

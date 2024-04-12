@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.openclassroom.dto.MessageRequestDTO;
+import com.openclassroom.dto.MessageResponseDTO;
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.dto.RentalFormDTO;
+import com.openclassroom.dto.RentalResponseDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.services.RentalService;
 import com.openclassroom.services.UserService;
@@ -44,6 +47,7 @@ public class RentalController {
 		List<RentalFormDTO> rentals_forms = new ArrayList<>();
 		rentalService.getRentals().forEach(r -> rentals_forms.add(r));
 		System.out.println("RentalController:"+rentals_forms);
+		System.out.println("getCreated_at - Type:"+ rentals_forms.get(7).getCreated_at().getClass().getName());
 		return rentals_forms;
 	}
 	
@@ -68,11 +72,21 @@ public class RentalController {
 		return rentalService.getRentalById(id);
 	}
 	
+//	@PostMapping
+//	public String postRental(
+//			 RentalDTO rentalDTO) throws IOException {
+//		System.out.println("rentalDTO:"+rentalDTO.toString());
+//		return this.rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
+//	}
+	
 	@PostMapping
-	public String postRental(
-			 RentalDTO rentalDTO) throws IOException {
+	public RentalResponseDTO postRental(RentalDTO rentalDTO) throws IOException {
 		System.out.println("rentalDTO:"+rentalDTO.toString());
-		return this.rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
+		//return this.rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
+		String rentalMessage = rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
+		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO(rentalMessage);
+		System.out.print("MessageController:"+rentalResponseDTO.getMessage());
+		return rentalResponseDTO;
 	}
 	
 	@PutMapping("{id}")

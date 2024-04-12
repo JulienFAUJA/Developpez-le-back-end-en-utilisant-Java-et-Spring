@@ -3,6 +3,7 @@ package com.openclassroom.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +22,8 @@ public class RentalFormDTO{
     private String description;
     private String picture;
 	private Integer owner_id;
-    private Timestamp created_at;
-    private Timestamp updated_at;
+    private Instant created_at;
+    private Instant updated_at;
     
     public Integer getId() {
  		return id;
@@ -80,19 +81,19 @@ public class RentalFormDTO{
  		this.owner_id = owner_id;
  	}
 
- 	public Timestamp getCreated_at() {
+ 	public Instant getCreated_at() {
  		return created_at;
  	}
 
- 	public void setCreated_at(Timestamp created_at) {
+ 	public void setCreated_at(Instant created_at) {
  		this.created_at = created_at;
  	}
 
- 	public Timestamp getUpdated_at() {
+ 	public Instant getUpdated_at() {
  		return updated_at;
  	}
 
- 	public void setUpdated_at(Timestamp updated_at) {
+ 	public void setUpdated_at(Instant updated_at) {
  		this.updated_at = updated_at;
  	}
      

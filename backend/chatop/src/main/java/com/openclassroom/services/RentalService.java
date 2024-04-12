@@ -56,7 +56,7 @@ public class RentalService {
 		return modelMapper.map(rental.orElseThrow(), RentalFormDTO.class);
 	}
 	
-	public String postRental(MultipartFile picture, RentalDTO rentalDTO) throws IOException {
+	public String postRental(MultipartFile picture, RentalDTO rentalDTO) {
 		System.out.println("rentalDTO:"+rentalDTO.toString());
 		RentalModel rental = modelMapper.map(rentalDTO, RentalModel.class);
 
@@ -66,25 +66,29 @@ public class RentalService {
 		rental.CreateNow();
 		rental.setOwner_id(currentUserId);
 		String altPhotoText="Photo(s) non disponible(s)...";
-		try {
-			
-
-            // Mise à jour de l'URL du fichier dans l'objet RentalModel
-			if (picture != null && !picture.isEmpty()) {
-				// Enregistrement du fichier
-	            String fileUrl = fileService.save(picture);
-				rental.setPicture(fileUrl);
-	        } else {
-	        	rental.setPicture(altPhotoText);
-	        }
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
+		// Mise à jour de l'URL du fichier dans l'objet RentalModel
+		if (picture != null && !picture.isEmpty()) {
+			// Enregistrement du fichier
+		    String fileUrl;
+			try {
+				fileUrl = fileService.save(picture);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				fileUrl=altPhotoText;
+			}
+			rental.setPicture(fileUrl);
+		} else {
 			rental.setPicture(altPhotoText);
-			return "";
 		}
-        rentalRepository.save(rental);
-		return "Annonce postée avec succès..."; 		
+		try {
+			rentalRepository.save(rental);
+			return "Annonce postée avec succès..."; 
+		}
+		catch(Exception ex) {
+			return ex.getMessage();
+		}
+        		
 	}
 
 }

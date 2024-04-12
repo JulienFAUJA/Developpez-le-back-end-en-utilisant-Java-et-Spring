@@ -23,9 +23,9 @@ public class SpringSecurityConfig{
 	
 	@Autowired
 	private UserService userService;
-
-	 @Value("${file_storage.location}")
-	 private String file_storage_location;
+//
+//	 @Value("${file_storage.location}")
+//	 private String file_storage_location;
 
 	
 	 public final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -45,16 +45,22 @@ public class SpringSecurityConfig{
 		String root_dir = System.getProperty("user.dir");
 		String static_folder_path = root_dir+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static";
 		String static_folder_path2 = LocationHelpers.STATIC_DIR;
-		System.out.println("file_storage_location:"+file_storage_location+"\nroot_dir:"+root_dir+"\nstatic_folder_path:"+static_folder_path+"\nstatic_folder_path2:"+static_folder_path2);
+		System.out.println("\nroot_dir:"+root_dir+"\nstatic_folder_path:"+static_folder_path+"\nstatic_folder_path2:"+static_folder_path2);
 		return http
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session
 			    		   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
        .authorizeHttpRequests(auth -> auth
-                .requestMatchers(LocationHelpers.REGISTER_URI, LocationHelpers.LOGIN_URI, LocationHelpers.STATIC_DIR).permitAll()
+                .requestMatchers(
+                		LocationHelpers.REGISTER_URI, 
+                		LocationHelpers.LOGIN_URI, 
+                		LocationHelpers.STATIC_DIR,
+                		LocationHelpers.SWAGGER_UI_URI,
+                		LocationHelpers.SWAGGER_API_URI
+                		).permitAll()
               
-                //.anyRequest().authenticated())
-       .anyRequest().permitAll())
+                .anyRequest().authenticated())
+       //.anyRequest().permitAll())
        .authenticationProvider(authenticationProvider)
        
         // Add JWT token filter

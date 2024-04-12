@@ -1,6 +1,7 @@
 package com.openclassroom.models;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -89,6 +90,17 @@ public class MessageModel {
 
 	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
+	}
+	
+	public void setCreated_atNow() {
+		Timestamp now = Timestamp.from(Instant.now());
+		this.setCreated_at(now);
+	}
+
+	
+	public void setUpdated_atNow() {
+		Timestamp now = Timestamp.from(Instant.now());
+		this.setUpdated_at(now);
 	}
 
     

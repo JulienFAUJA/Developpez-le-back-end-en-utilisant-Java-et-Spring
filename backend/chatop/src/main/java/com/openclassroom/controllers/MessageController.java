@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassroom.dto.MessageDTO;
+import com.openclassroom.dto.MessageRequestDTO;
+import com.openclassroom.dto.MessageResponseDTO;
 import com.openclassroom.models.MessageModel;
 import com.openclassroom.services.JWTokenService;
 import com.openclassroom.services.MessageService;
@@ -34,24 +35,25 @@ public class MessageController {
 	
 	@PostMapping
 	@ResponseBody
-	public String postMessage(@Valid @RequestBody MessageDTO messageDTO) {
+	public MessageResponseDTO postMessage(@Valid @RequestBody MessageRequestDTO messageDTO) {
 		String messageCreated = messageService.postMessage(messageDTO);
+		MessageResponseDTO messageResponseDTO= new MessageResponseDTO(messageCreated);
 		System.out.print("MessageController:"+messageCreated.toString());
-		return messageCreated;
+		return messageResponseDTO;
 	}
 	
-	@GetMapping("/all")
-	public List<MessageDTO> getAllMessages() {
-		List<MessageDTO> messages = new ArrayList<>();
-		messageService.getMessages().forEach(m -> messages.add(m));
-		System.out.println("MessageController:"+messages);
-		return messages;
-	}
-	
-	@GetMapping("{id}")
-	public MessageDTO getMessageById(@PathVariable("id") Integer id) {
-		System.out.println("MessageController:"+messageService.getMessageById(id).toString());
-		return messageService.getMessageById(id);
-	}
+//	@GetMapping("/all")
+//	public List<MessageDTO> getAllMessages() {
+//		List<MessageDTO> messages = new ArrayList<>();
+//		messageService.getMessages().forEach(m -> messages.add(m));
+//		System.out.println("MessageController:"+messages);
+//		return messages;
+//	}
+//	
+//	@GetMapping("{id}")
+//	public MessageDTO getMessageById(@PathVariable("id") Integer id) {
+//		System.out.println("MessageController:"+messageService.getMessageById(id).toString());
+//		return messageService.getMessageById(id);
+//	}
 		
 }
