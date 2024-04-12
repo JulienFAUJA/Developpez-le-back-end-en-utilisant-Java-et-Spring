@@ -58,17 +58,6 @@ public class RentalController {
     
 	
   
-//	
-//	@GetMapping(value ="/", consumes={"application/json"})
-//	@ResponseBody
-//	public List<RentalDTO> getAllRentals() {
-//		System.out.println("Rentals...");
-//		List<RentalDTO> rentals = new ArrayList<>();
-//		rentalService.getRentals().forEach(r -> rentals.add(r));
-//		System.out.println("RentalController:"+rentals);
-//		return rentals;
-//	}
-	
 
 	@GetMapping("{id}")
 	public RentalFormDTO getRentalById(@PathVariable("id") Integer id) {

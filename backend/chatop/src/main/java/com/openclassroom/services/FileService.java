@@ -65,7 +65,7 @@ public class FileService {
 //		}
 //		System.out.println("resource:"+resource);
 //    	return resource;
-    	return "http://localhost:8080/api/images/" +filename;
+    	return "http://localhost:8080/api/static/" +filename;
         //return LocationHelpers.STATIC_DIR+"/" + filename;
     }
 
