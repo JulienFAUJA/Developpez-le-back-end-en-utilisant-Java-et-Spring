@@ -6,19 +6,27 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.MessageRequestDTO;
 import com.openclassroom.models.MessageModel;
+import com.openclassroom.models.RentalModel;
 import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.MessageRepository;
+import com.openclassroom.repositories.RentalRepository;
+import com.openclassroom.repositories.UserRepository;
 
 @Service
 public class MessageService {
 	
 	@Autowired
 	private MessageRepository messageRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private RentalRepository rentalRepository;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -33,6 +41,11 @@ public class MessageService {
     public String postMessage(MessageRequestDTO messageDTO) {
 		System.out.println("messageDTO:"+messageDTO.toString());
 		MessageModel messageCreated = modelMapper.map(messageDTO, MessageModel.class);
+		
+		UserModel user = userRepository.findById(messageDTO.getUser_id()).orElseThrow();
+        RentalModel rental = rentalRepository.findById(messageDTO.getRental_id()).orElseThrow();
+//        messageCreated.setUser(user);
+//        messageCreated.setRental(rental);
 		messageCreated.setCreated_atNow();
 		messageCreated.setUpdated_atNow();
 		try {

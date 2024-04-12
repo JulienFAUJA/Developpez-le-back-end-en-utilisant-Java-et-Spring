@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,9 +24,11 @@ import com.openclassroom.dto.MessageResponseDTO;
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.dto.RentalFormDTO;
 import com.openclassroom.dto.RentalResponseDTO;
+import com.openclassroom.dto.RentalsResponseDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.services.RentalService;
 import com.openclassroom.services.UserService;
+import com.openclassroom.models.RentalModel;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,13 +45,14 @@ public class RentalController {
 
 	@GetMapping
 	@ResponseBody
-	public List<RentalFormDTO> getAllRentals() {
+	public ResponseEntity<RentalsResponseDTO> getAllRentals() {
 		System.out.println("Rentals...");
-		List<RentalFormDTO> rentals_forms = new ArrayList<>();
-		rentalService.getRentals().forEach(r -> rentals_forms.add(r));
-		System.out.println("RentalController:"+rentals_forms);
-		System.out.println("getCreated_at - Type:"+ rentals_forms.get(7).getCreated_at().getClass().getName());
-		return rentals_forms;
+		List<RentalFormDTO> rentals = rentalService.getRentals();
+		RentalsResponseDTO response = new RentalsResponseDTO(rentals);
+//		List<RentalFormDTO> rentals_forms = new ArrayList<>();
+//		rentalService.getRentals().forEach(r -> rentals_forms.add(r));
+		System.out.println("RentalController:"+response);
+		return ResponseEntity.ok(response);
 	}
 	
     

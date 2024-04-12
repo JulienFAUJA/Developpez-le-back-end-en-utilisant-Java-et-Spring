@@ -54,18 +54,18 @@ public class FileService {
         return getImageUrl(originalName, destFile).toString();
     }
     
-    public Resource getImageUrl(String filename, Path destFile) throws Exception {
-    	Resource resource;
-		try {
-			resource = new UrlResource(destFile.toString());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			resource = new UrlResource("http://localhost:8080/api/images/" +filename);
-		}
-		System.out.println("resource:"+resource);
-    	return resource;
-    	//return "http://localhost:8080/api/images/" +filename;
+    public String getImageUrl(String filename, Path destFile) throws Exception {
+//    	Resource resource;
+//		try {
+//			resource = new UrlResource(destFile.toString());
+//		} catch (MalformedURLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			resource = new UrlResource("http://localhost:8080/api/images/" +filename);
+//		}
+//		System.out.println("resource:"+resource);
+//    	return resource;
+    	return "http://localhost:8080/api/images/" +filename;
         //return LocationHelpers.STATIC_DIR+"/" + filename;
     }
 

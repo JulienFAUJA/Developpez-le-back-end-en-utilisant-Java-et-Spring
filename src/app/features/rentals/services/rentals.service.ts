@@ -14,6 +14,15 @@ export class RentalsService {
   constructor(private httpClient: HttpClient) {}
 
   public all(): Observable<RentalsResponse> {
+    console.log(
+      'all:' +
+        this.httpClient
+          .get<RentalsResponse>(this.pathService)
+          .forEach((rental) => {
+            //const r:RentalResponse = rental.rentals;
+            console.log('rental:' + rental.toString());
+          })
+    );
     return this.httpClient.get<RentalsResponse>(this.pathService);
   }
 

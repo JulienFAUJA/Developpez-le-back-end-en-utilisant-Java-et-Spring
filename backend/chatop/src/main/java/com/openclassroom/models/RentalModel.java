@@ -112,7 +112,7 @@ public class RentalModel implements Serializable{
  	public void CreateNow() {
  		Instant now = Instant.now();
  		this.setCreated_at(now);
- 		this.setUpdated_at(now);
+ 		this.setCreated_at(now);
  	}
      
      

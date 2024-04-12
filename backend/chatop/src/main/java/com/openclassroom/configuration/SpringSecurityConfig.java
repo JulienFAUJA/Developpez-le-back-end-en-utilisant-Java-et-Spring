@@ -55,6 +55,7 @@ public class SpringSecurityConfig{
                 		LocationHelpers.REGISTER_URI, 
                 		LocationHelpers.LOGIN_URI, 
                 		LocationHelpers.STATIC_DIR,
+                		LocationHelpers.IMAGES_URI_RECURSIVES,
                 		LocationHelpers.SWAGGER_UI_URI,
                 		LocationHelpers.SWAGGER_API_URI
                 		).permitAll()

@@ -43,7 +43,7 @@ public class RentalService {
     
    
 	
-	public Iterable<RentalFormDTO> getRentals(){
+	public List<RentalFormDTO> getRentals(){
 		List<RentalFormDTO> rentals = new ArrayList<>();
 		this.rentalRepository.findAll().forEach(r -> rentals.add(modelMapper.map(r, RentalFormDTO.class))); //this.convertToDTO(r)
 		return rentals;
@@ -65,6 +65,7 @@ public class RentalService {
         Integer currentUserId = currentUser.getId();
 		rental.CreateNow();
 		rental.setOwner_id(currentUserId);
+		//rental.setUser(currentUser);
 		String altPhotoText="Photo(s) non disponible(s)...";
 		// Mise à jour de l'URL du fichier dans l'objet RentalModel
 		if (picture != null && !picture.isEmpty()) {
