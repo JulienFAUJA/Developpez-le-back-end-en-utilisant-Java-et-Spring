@@ -17,9 +17,11 @@ import com.openclassroom.models.RentalModel;
 import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.MessageRepository;
 import com.openclassroom.repositories.RentalRepository;
+import com.openclassroom.services.Interfaces.IAuthService;
+import com.openclassroom.services.Interfaces.IRentalService;
 
 @Service
-public class RentalService {
+public class RentalService implements IRentalService{
 	
 	@Autowired
 	private RentalRepository rentalRepository;
@@ -84,6 +86,37 @@ public class RentalService {
 		} else {
 			rental.setPicture(altPhotoText);
 		}
+		try {
+			rentalRepository.save(rental);
+		}
+		catch(Exception ex) {
+		}
+//		String StatusMessage="Annonce postée avec succès..."; 
+//		boolean isAlreadyPresent = rentalRepository.findById(rentalDTO.getId()) != null;
+//		System.out.println("rentalDTO:"+isAlreadyPresent != null ? "[UPDATE]" : "[POST]"+rentalDTO.toString());
+//		try {
+//			rentalRepository.save(rental);
+//			StatusMessage=isAlreadyPresent ? "Annonce mise à jour avec succès..." : "Annonce postée avec succès...";
+//		}
+//		catch(Exception ex) {
+//			StatusMessage=isAlreadyPresent ? "Erreur de mise à jour de l'annonce..." : "Erreur de publication de l'annonce...";
+//		}
+		return "";
+		
+        		
+	}
+	
+	public String updateRental(Integer id, RentalDTO rentalDTO) {
+		
+		RentalModel rental = modelMapper.map(rentalDTO, RentalModel.class);
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserModel currentUser = (UserModel) authentication.getPrincipal();
+        Integer currentUserId = currentUser.getId();
+		rental.CreateNow();
+		rental.setOwner_id(currentUserId);
+		//rental.setUser(currentUser);
+		
 		try {
 			rentalRepository.save(rental);
 		}

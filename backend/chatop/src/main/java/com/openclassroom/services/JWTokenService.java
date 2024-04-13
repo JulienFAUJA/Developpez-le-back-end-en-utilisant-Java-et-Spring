@@ -9,7 +9,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.openclassroom.models.UserModel;
+import com.openclassroom.services.Interfaces.IJWTokenService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +17,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
-public class JWTokenService {
+public class JWTokenService implements IJWTokenService{
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -50,11 +50,11 @@ public class JWTokenService {
         return (subject.equals(email) && !isTokenExpired(token) && validToken);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
@@ -63,7 +63,7 @@ public class JWTokenService {
         return resolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
                 .verifyWith(getSigninKey())
@@ -88,7 +88,7 @@ public class JWTokenService {
         return token;
     }
 
-    private SecretKey getSigninKey() {
+    public SecretKey getSigninKey() {
         byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }

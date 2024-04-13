@@ -15,7 +15,7 @@ import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.UserRepository;
-import com.openclassroom.services.Impl.IAuthService;
+import com.openclassroom.services.Interfaces.IAuthService;
 
 @Service
 public class AuthService implements IAuthService{

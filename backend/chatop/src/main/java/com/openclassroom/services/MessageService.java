@@ -15,9 +15,11 @@ import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.MessageRepository;
 import com.openclassroom.repositories.RentalRepository;
 import com.openclassroom.repositories.UserRepository;
+import com.openclassroom.services.Interfaces.IMessageService;
+import com.openclassroom.services.Interfaces.IRentalService;
 
 @Service
-public class MessageService {
+public class MessageService implements IMessageService{
 	
 	@Autowired
 	private MessageRepository messageRepository;
@@ -59,18 +61,18 @@ public class MessageService {
     }
    
 	
-	public Iterable<MessageRequestDTO> getMessages(){
-		List<MessageRequestDTO> messages = new ArrayList<>();
-		this.messageRepository.findAll().forEach(m -> messages.add(this.convertToDTO(m)));
-		return messages;
-	}
-	
-	public MessageRequestDTO getMessageById(Integer id){
-		Optional<MessageModel> message = this.messageRepository.findById(id);
-		System.out.println("MessageService -> message.orElseThrow():"+message.orElseThrow());
-		System.out.println("MessageService -> convertToDTO(message.orElseThrow()):"+convertToDTO(message.orElseThrow()));
-		return convertToDTO(message.orElseThrow());
-	}
+//	public Iterable<MessageRequestDTO> getMessages(){
+//		List<MessageRequestDTO> messages = new ArrayList<>();
+//		this.messageRepository.findAll().forEach(m -> messages.add(this.convertToDTO(m)));
+//		return messages;
+//	}
+//	
+//	public MessageRequestDTO getMessageById(Integer id){
+//		Optional<MessageModel> message = this.messageRepository.findById(id);
+//		System.out.println("MessageService -> message.orElseThrow():"+message.orElseThrow());
+//		System.out.println("MessageService -> convertToDTO(message.orElseThrow()):"+convertToDTO(message.orElseThrow()));
+//		return convertToDTO(message.orElseThrow());
+//	}
 	
 
 }
