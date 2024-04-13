@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.MessageRequestDTO;
 import com.openclassroom.dto.MessageResponseDTO;
+import com.openclassroom.dto.UserDTO;
 import com.openclassroom.models.MessageModel;
 import com.openclassroom.models.RentalModel;
 import com.openclassroom.models.UserModel;
@@ -21,6 +22,13 @@ import com.openclassroom.repositories.RentalRepository;
 import com.openclassroom.repositories.UserRepository;
 import com.openclassroom.services.Interfaces.IMessageService;
 import com.openclassroom.services.Interfaces.IRentalService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Service
 public class MessageService implements IMessageService{
@@ -39,11 +47,15 @@ public class MessageService implements IMessageService{
 	
 	
     
-    private MessageRequestDTO convertToDTO(MessageModel message) {
-        return modelMapper.map(message, MessageRequestDTO.class);
-    }
-    
-    
+    @Operation(summary = "Publication d'un message sur une annonce", description = "Publication d'un message sur une annonce...")
+	@ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Publication d'un message sur une annonce",
+                    content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MessageResponseDTO.class)))}),
+            @ApiResponse(responseCode = "400", description = "Champs invalide...",
+                    content = {@Content(mediaType = "application/json")}),
+    		@ApiResponse(responseCode = "401", description = "Non authorisé...",
+            content = {@Content(mediaType = "application/json")}),
+	})
     public ResponseEntity<?> postMessage(MessageRequestDTO messageDTO) {
     	if (messageDTO.getMessage() == null || messageDTO.getRental_id() == null || messageDTO.getUser_id() == null) {
     		MessageResponseDTO errorResponse = new MessageResponseDTO();
@@ -67,19 +79,6 @@ public class MessageService implements IMessageService{
 		
     }
    
-	
-//	public Iterable<MessageRequestDTO> getMessages(){
-//		List<MessageRequestDTO> messages = new ArrayList<>();
-//		this.messageRepository.findAll().forEach(m -> messages.add(this.convertToDTO(m)));
-//		return messages;
-//	}
-//	
-//	public MessageRequestDTO getMessageById(Integer id){
-//		Optional<MessageModel> message = this.messageRepository.findById(id);
-//		System.out.println("MessageService -> message.orElseThrow():"+message.orElseThrow());
-//		System.out.println("MessageService -> convertToDTO(message.orElseThrow()):"+convertToDTO(message.orElseThrow()));
-//		return convertToDTO(message.orElseThrow());
-//	}
 	
 
 }

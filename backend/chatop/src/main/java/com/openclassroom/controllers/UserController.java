@@ -8,8 +8,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassroom.dto.RentalResponseDTO;
 import com.openclassroom.dto.UserDTO;
 import com.openclassroom.services.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,14 +26,13 @@ public class UserController {
 	@Autowired
     private UserService userService;
 	
-//	@GetMapping("/all")
-//	public List<UserDTO> getAllUsers() {
-//		List<UserDTO> users = new ArrayList<>();
-//		userService.getUsers().forEach(u -> users.add(u));
-//		System.out.println("UserController:"+users);
-//		return users;
-//	}
-	
+	@Operation(summary = "Affichage d'un profil utilisateur", description = "Affichage d'un profil utilisateur depuis son id...")
+	@ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Affichage du profil utilisateur",
+                    content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserDTO.class)))}),
+            @ApiResponse(responseCode = "401", description = "Non authorisé...",
+                    content = {@Content(mediaType = "application/json")}),
+    })
 	@GetMapping("{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") Integer id) {
 		System.out.println("id:"+id.toString());

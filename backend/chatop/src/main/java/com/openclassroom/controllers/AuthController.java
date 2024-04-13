@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassroom.dto.MessageResponseDTO;
 import com.openclassroom.dto.TokenDTO;
 import com.openclassroom.dto.UserLoggedDTO;
 import com.openclassroom.dto.UserLoginDTO;
@@ -63,7 +64,14 @@ private AuthService authService;
 		return authService.authenticating(userLoginDTO);
     }
 	
+	
 	@Operation(summary = "Page de profil", description = "Page deu profil de l'utilisateur connecté")
+	@ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Affichage de la page de profil de l'utilisateur",
+                    content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MessageResponseDTO.class)))}),
+            @ApiResponse(responseCode = "401", description = "Non authorisé...",
+                    content = {@Content(mediaType = "application/json")}),
+    })
 	@GetMapping(value ="/me")
 	public ResponseEntity<?> getMe() {
 		return this.authService.me();
