@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,32 +35,9 @@ public class UserService implements UserDetailsService, IUserService {
 	
 	@Autowired
 	private ModelMapper modelMapper;
-	
-
-
-    private UserModel convertToEntity(UserDTO userDto) {
-        return modelMapper.map(userDto, UserModel.class);
-    }
     
     private UserDTO convertToDTO(UserModel user) {
         return modelMapper.map(user, UserDTO.class);
-    }
-    
-    private UserModel convertRegisterToEntity(UserRegisterDTO userRegisterDTO) {
-        return modelMapper.map(userRegisterDTO, UserModel.class);
-    }
-    
-    private UserRegisterDTO convertToRegisterDTO(UserModel user) {
-        return modelMapper.map(user, UserRegisterDTO.class);
-    }
-    
-    
-    private UserModel convertLoginToEntity(UserLoginDTO userLoginDTO) {
-        return modelMapper.map(userLoginDTO, UserModel.class);
-    }
-    
-    private UserLoginDTO convertToLoginDTO(UserModel user) {
-        return modelMapper.map(user, UserLoginDTO.class);
     }
     
     @Override
@@ -74,34 +53,15 @@ public class UserService implements UserDetailsService, IUserService {
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 		return authorities;
 	}
-    
-//    
-//	public Iterable<UserDTO> getUsers(){
-//		List<UserDTO> users = new ArrayList<>();
-//		this.userRepository.findAll().forEach(u -> users.add(this.convertToDTO(u)));
-//		return users;
-//	}
+   
 	
-	
-	public UserDTO getUserById(Integer id){
+	public ResponseEntity<?> getUserById(Integer id){
 		Optional<UserModel> user = this.userRepository.findById(id);
 		System.out.println("UserService -> user.orElseThrow():"+user.orElseThrow());
 		System.out.println("UserService -> convertToDTO(user.orElseThrow()):"+convertToDTO(user.orElseThrow()));
-		return convertToDTO(user.orElseThrow());
+		return ResponseEntity.status(HttpStatus.OK).body(convertToDTO(user.orElseThrow()));
 	}
 	
-//	
-//	
-//	public UserModel registerUser(UserRegisterDTO userRegisterDTO) {
-//		System.out.println("userRegisterDTO:"+userRegisterDTO.toString());
-//		String password_hash = BCrypt.hashpw(userRegisterDTO.getPassword(), BCrypt.gensalt());
-//		userRegisterDTO.setPassword(password_hash);
-//		userRegisterDTO.setCreated_atNow();
-//		UserModel userCreated = convertRegisterToEntity(userRegisterDTO);
-//    	userRepository.save(userCreated);
-//    	// Logique pour vérifier s'il existe déjà...
-//    	return userCreated;
-//	}
 
 	
 

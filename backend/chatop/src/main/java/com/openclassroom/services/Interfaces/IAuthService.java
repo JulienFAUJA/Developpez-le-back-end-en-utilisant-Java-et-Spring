@@ -11,7 +11,7 @@ public interface IAuthService {
 	
 	UserModel getCurrentUser(String label);
 	
-	UserLoggedDTO me();
+	ResponseEntity<?> me();
 	
 	String register(UserRegisterDTO request);
 	

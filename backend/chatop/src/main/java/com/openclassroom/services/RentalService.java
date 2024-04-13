@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.dto.RentalFormDTO;
+import com.openclassroom.dto.RentalResponseDTO;
+import com.openclassroom.dto.RentalsResponseDTO;
 import com.openclassroom.models.RentalModel;
 import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.MessageRepository;
@@ -46,23 +50,21 @@ public class RentalService implements IRentalService{
     
    
 	@Override 
-	public List<RentalFormDTO> getRentals(){
+	public ResponseEntity<?> getRentals(){
 		List<RentalFormDTO> rentals = new ArrayList<>();
-		this.rentalRepository.findAll().forEach(r -> rentals.add(modelMapper.map(r, RentalFormDTO.class))); //this.convertToDTO(r)
-		return rentals;
+		this.rentalRepository.findAll().forEach(r -> rentals.add(modelMapper.map(r, RentalFormDTO.class))); 
+		RentalsResponseDTO rentalsResponseDTO = new RentalsResponseDTO(rentals);
+		return ResponseEntity.status(HttpStatus.OK).body(rentalsResponseDTO);
 	}
 	
 	@Override 
-	public RentalFormDTO getRentalById(Integer id){
+	public ResponseEntity<?> getRentalById(Integer id){
 		Optional<RentalModel> rental = this.rentalRepository.findById(id);
-		
-		System.out.println("RentalService -> rental.orElseThrow():"+rental.orElseThrow());
-		System.out.println("RentalService -> convertToDTO(rental.orElseThrow()):"+convertToDTO(rental.orElseThrow()));
-		return modelMapper.map(rental.orElseThrow(), RentalFormDTO.class);
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(rental.orElseThrow(), RentalFormDTO.class));
 	}
 	
 	@Override 
-	public String postRental(MultipartFile picture, RentalDTO rentalDTO) {
+	public ResponseEntity<?> postRental(MultipartFile picture, RentalDTO rentalDTO) {
 		RentalModel rental = modelMapper.map(rentalDTO, RentalModel.class);
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -91,24 +93,13 @@ public class RentalService implements IRentalService{
 			rentalRepository.save(rental);
 		}
 		catch(Exception ex) {
-		}
-//		String StatusMessage="Annonce postée avec succès..."; 
-//		boolean isAlreadyPresent = rentalRepository.findById(rentalDTO.getId()) != null;
-//		System.out.println("rentalDTO:"+isAlreadyPresent != null ? "[UPDATE]" : "[POST]"+rentalDTO.toString());
-//		try {
-//			rentalRepository.save(rental);
-//			StatusMessage=isAlreadyPresent ? "Annonce mise à jour avec succès..." : "Annonce postée avec succès...";
-//		}
-//		catch(Exception ex) {
-//			StatusMessage=isAlreadyPresent ? "Erreur de mise à jour de l'annonce..." : "Erreur de publication de l'annonce...";
-//		}
-		return "Annonce postée avec succès...";
-		
-        		
+		}   
+		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO("Annonce postée avec succès...");
+		return ResponseEntity.status(HttpStatus.OK).body(rentalResponseDTO);
 	}
 	
 	@Override 
-	public String updateRental(Integer id, RentalFormDTO rentalFormDTO) {
+	public ResponseEntity<?> updateRental(Integer id, RentalFormDTO rentalFormDTO) {
 		RentalModel rental = modelMapper.map(rentalFormDTO, RentalModel.class);
 		Optional<RentalModel> rental_by_id = rentalRepository.findById(id);
 		if(rental_by_id != null) {
@@ -127,7 +118,8 @@ public class RentalService implements IRentalService{
 		}
 		catch(Exception ex) {
 		}
-		return "Annonce modifiée avec succès...";
+		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO("Annonce modifiée avec succès...");
+		return ResponseEntity.status(HttpStatus.OK).body(rentalResponseDTO);
 		
         		
 	}

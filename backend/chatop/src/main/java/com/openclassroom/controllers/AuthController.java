@@ -65,9 +65,8 @@ private AuthService authService;
 	
 	@Operation(summary = "Page de profil", description = "Page deu profil de l'utilisateur connecté")
 	@GetMapping(value ="/me")
-	public ResponseEntity<UserLoggedDTO> getMe() {
-		UserLoggedDTO userLoggedDto = this.authService.me();
-		return ResponseEntity.ok(userLoggedDto);
+	public ResponseEntity<?> getMe() {
+		return this.authService.me();
 		
 	}
 	

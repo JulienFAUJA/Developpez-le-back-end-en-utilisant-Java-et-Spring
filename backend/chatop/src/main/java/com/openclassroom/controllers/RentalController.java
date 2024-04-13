@@ -43,36 +43,35 @@ public class RentalController {
     private RentalService rentalService;
 	
 
-	@GetMapping
+	@GetMapping 
 	@ResponseBody
-	public ResponseEntity<RentalsResponseDTO> getAllRentals() {
-		List<RentalFormDTO> rentals = rentalService.getRentals();
-		RentalsResponseDTO response = new RentalsResponseDTO(rentals);
-		return ResponseEntity.ok(response);
+	public ResponseEntity<?> getAllRentals() {
+		return rentalService.getRentals();
 	}
 	
-    
+	/*
+	 * List<RentalFormDTO> rentals = rentalService.getRentals();
+		RentalsResponseDTO response = new RentalsResponseDTO(rentals);
+		return ResponseEntity.ok(response);
+	 */
+    //ResponseEntity<RentalsResponseDTO>
 	
   
 
 	@GetMapping("{id}")
-	public RentalFormDTO getRentalById(@PathVariable("id") Integer id) {
+	public ResponseEntity<?> getRentalById(@PathVariable("id") Integer id) {
 		return rentalService.getRentalById(id);
 	}
 	
 	
 	@PostMapping
-	public RentalResponseDTO postRental(RentalDTO rentalDTO) throws IOException {
-		String rentalMessage = rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
-		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO(rentalMessage);
-		return rentalResponseDTO;
+	public ResponseEntity<?> postRental(RentalDTO rentalDTO) throws IOException {
+		return rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
 	}
 	
 	@PutMapping(value="{id}")
-	public RentalResponseDTO setRentalForId(@PathVariable("id") Integer id, RentalFormDTO rentalFormDTO) {
-		String rentalMessage = rentalService.updateRental(id, rentalFormDTO);
-		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO(rentalMessage);
-		return rentalResponseDTO;
+	public ResponseEntity<?> setRentalForId(@PathVariable("id") Integer id, RentalFormDTO rentalFormDTO) {
+		return rentalService.updateRental(id, rentalFormDTO);
 	}
 
 }

@@ -68,12 +68,16 @@ public class AuthService implements IAuthService{
         return userModel;
     }
     
-    public UserLoggedDTO me(){
+    public ResponseEntity<?> me(){
     	UserModel UserCurrent = getCurrentUser("/Me");
         String email = UserCurrent.getUsername();
         UserModel user = this.userRepository.findByEmail(email).orElse(null);
+        if (user==null) {
+        	MessageResponseDTO errorResponse = new MessageResponseDTO("Unauthorized: ");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
         UserLoggedDTO userLoggedDto = modelMapper.map(user, UserLoggedDTO.class);
-        return userLoggedDto;
+        return ResponseEntity.status(HttpStatus.OK).body(userLoggedDto);
     }
     
     

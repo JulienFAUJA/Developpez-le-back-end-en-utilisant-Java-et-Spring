@@ -1,9 +1,11 @@
 package com.openclassroom.services.Interfaces;
 
+import org.springframework.http.ResponseEntity;
+
 import com.openclassroom.dto.UserDTO;
 
 public interface IUserService {
 	
-	UserDTO getUserById(Integer id);
+	ResponseEntity<?> getUserById(Integer id);
 
 }
