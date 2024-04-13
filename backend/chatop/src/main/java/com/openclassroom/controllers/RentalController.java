@@ -57,18 +57,14 @@ public class RentalController {
 
 	@GetMapping("{id}")
 	public RentalFormDTO getRentalById(@PathVariable("id") Integer id) {
-		System.out.println("RentalController:"+rentalService.getRentalById(id).toString());
 		return rentalService.getRentalById(id);
 	}
 	
 	
 	@PostMapping
 	public RentalResponseDTO postRental(RentalDTO rentalDTO) throws IOException {
-		System.out.println("rentalDTO:"+rentalDTO.toString());
-		//return this.rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
 		String rentalMessage = rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
 		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO(rentalMessage);
-		System.out.print("RentalController:"+rentalResponseDTO.getMessage());
 		return rentalResponseDTO;
 	}
 	

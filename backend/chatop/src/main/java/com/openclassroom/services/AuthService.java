@@ -2,14 +2,19 @@ package com.openclassroom.services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.openclassroom.dto.MessageResponseDTO;
+import com.openclassroom.dto.TokenDTO;
 import com.openclassroom.dto.UserLoggedDTO;
 import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
@@ -87,7 +92,7 @@ public class AuthService implements IAuthService{
 
     }
 
-    public String authenticating(UserLoginDTO request) {
+    public ResponseEntity<?> authenticating(UserLoginDTO request) {
     	    	Authentication authentication;
     	    try {
     	    	UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -96,18 +101,21 @@ public class AuthService implements IAuthService{
                 );
     	    	authentication = authenticationManager.authenticate(authToken);
     	    }
-    	    catch(Exception ex) {
-    	    	System.out.println("[Exception][AuthService][authenticating]:"+ex.getMessage());
-    	    	return ex.getMessage();
+    	    catch (AuthenticationException e) {
+    	        // Si une exception d'authentification se produit (par exemple, erreur 401), renvoie un ResponseEntity avec un code de statut 401 Unauthorized
+    	    	MessageResponseDTO errorResponse = new MessageResponseDTO("Unauthorized: " + e.getMessage());
+    	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     	    }
     	    SecurityContextHolder.getContext().setAuthentication(authentication);
     	    UserModel user = (UserModel)authentication.getPrincipal();
     	    String email = user.getUsername();
     	    String jwt = jwtService.generateToken(email);
     	    System.out.println("jwt:"+jwt);
-    	    return jwt;
+    	    TokenDTO token = new TokenDTO(jwt);
+    	    return ResponseEntity.ok(token);
     	    	
-        
+    	   
+    	    
        
 
 

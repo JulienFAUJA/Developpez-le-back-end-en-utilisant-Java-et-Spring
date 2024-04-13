@@ -30,13 +30,13 @@ public class MessageController {
 	@Autowired
 	private JWTokenService jwtService;
 	
-	@PostMapping
+	@PostMapping 
 	@ResponseBody
-	public ResponseEntity<MessageResponseDTO> postMessage(@Valid @RequestBody MessageRequestDTO messageDTO) {
-		String messageCreated = messageService.postMessage(messageDTO);
-		MessageResponseDTO messageResponseDTO= new MessageResponseDTO(messageCreated);
-		return ResponseEntity.ok(messageResponseDTO);
+	public ResponseEntity<?> postMessage(@Valid @RequestBody MessageRequestDTO messageDTO) {
+		return messageService.postMessage(messageDTO);
 	}
+	
+	//ResponseEntity<MessageResponseDTO>
 	
 //	@GetMapping("/all")
 //	public List<MessageDTO> getAllMessages() {

@@ -27,6 +27,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthController {
 	
+
+
 @Autowired
 private AuthService authService;
 	
@@ -45,6 +47,8 @@ private AuthService authService;
 		return ResponseEntity.ok(token);
 	}
 	
+
+	
 	@Operation(summary = "Connexion", description = "Permet à un utilisateur de se connecter à son profil avec ses identifiants.")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utilisateur connecté avec succès",
@@ -55,15 +59,19 @@ private AuthService authService;
                     content = {@Content(mediaType = "application/json")}),
     })
 	@PostMapping(value ="/login", consumes={"application/json"})
-    public ResponseEntity<TokenDTO> login(@Valid @RequestBody(required = true) UserLoginDTO userLoginDTO) {
-		TokenDTO token = new TokenDTO(authService.authenticating(userLoginDTO));
-		return ResponseEntity.ok(token);
+    public ResponseEntity<?> login(@Valid @RequestBody(required = true) UserLoginDTO userLoginDTO) {
+		return authService.authenticating(userLoginDTO);
     }
 	
 	@Operation(summary = "Page de profil", description = "Page deu profil de l'utilisateur connecté")
 	@GetMapping(value ="/me")
 	public ResponseEntity<UserLoggedDTO> getMe() {
 		UserLoggedDTO userLoggedDto = this.authService.me();
-		return ResponseEntity.ok(userLoggedDto);	
+		return ResponseEntity.ok(userLoggedDto);
+		
 	}
+	
+	
+	
+
 }

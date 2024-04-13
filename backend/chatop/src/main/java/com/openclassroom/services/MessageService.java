@@ -6,9 +6,13 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.MessageRequestDTO;
+import com.openclassroom.dto.MessageResponseDTO;
 import com.openclassroom.models.MessageModel;
 import com.openclassroom.models.RentalModel;
 import com.openclassroom.models.UserModel;
@@ -40,23 +44,26 @@ public class MessageService implements IMessageService{
     }
     
     
-    public String postMessage(MessageRequestDTO messageDTO) {
-		System.out.println("messageDTO:"+messageDTO.toString());
+    public ResponseEntity<?> postMessage(MessageRequestDTO messageDTO) {
+    	if (messageDTO.getMessage() == null || messageDTO.getRental_id() == null || messageDTO.getUser_id() == null) {
+    		MessageResponseDTO errorResponse = new MessageResponseDTO();
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    	}
 		MessageModel messageCreated = modelMapper.map(messageDTO, MessageModel.class);
 		
-		UserModel user = userRepository.findById(messageDTO.getUser_id()).orElseThrow();
-        RentalModel rental = rentalRepository.findById(messageDTO.getRental_id()).orElseThrow();
-//        messageCreated.setUser(user);
-//        messageCreated.setRental(rental);
+		
 		messageCreated.setCreated_atNow();
 		messageCreated.setUpdated_atNow();
 		try {
 			messageRepository.save(messageCreated);
-	    	return "Message créé avec succès...";
+			MessageResponseDTO messageResponse = new MessageResponseDTO("Message créé avec succès...");
+	    	return ResponseEntity.ok(messageResponse);
 		}
-		catch(Exception ex) {
-			return ex.getMessage();
-		}
+		catch (AuthenticationException e) {
+	        // Si une exception d'authentification se produit (par exemple, erreur 401), renvoie un ResponseEntity avec un code de statut 401 Unauthorized
+	    	MessageResponseDTO errorResponse = new MessageResponseDTO();
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+	    }
 		
     }
    
