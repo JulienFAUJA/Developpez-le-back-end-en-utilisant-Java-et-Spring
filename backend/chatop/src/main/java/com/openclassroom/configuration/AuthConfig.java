@@ -47,10 +47,6 @@ public class AuthConfig {
 		return authProvider;
 	}
 	
-//	  @Bean
-//	  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-//	    return config.getAuthenticationManager();
-//	  }
 	  
 	  @Bean
 	    public AuthenticationManager authenticationManager(HttpSecurity http, UserService userService) throws Exception {

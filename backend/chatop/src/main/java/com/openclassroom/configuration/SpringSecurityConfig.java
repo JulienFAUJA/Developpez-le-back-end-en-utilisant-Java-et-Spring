@@ -23,11 +23,8 @@ public class SpringSecurityConfig{
 	
 	@Autowired
 	private UserService userService;
-//
-//	 @Value("${file_storage.location}")
-//	 private String file_storage_location;
 
-	
+	// Le filtre qui va permettre de récupérer le Token
 	 public final JwtAuthenticationFilter jwtAuthenticationFilter;
 	 public final AuthenticationProvider authenticationProvider;
 
@@ -41,6 +38,12 @@ public class SpringSecurityConfig{
 	    
 
 	@Bean
+	/**
+	 * La FilterChain qui est un des trois axes de sécurité de Spring Security
+	 * @param http L'objet http courant
+	 * @return Ce même objet http mais ayant reçu les paramètres de filtres.
+	 * @throws Exception
+	 */
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		String root_dir = System.getProperty("user.dir");
 		String static_folder_path = root_dir+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static";
@@ -48,8 +51,10 @@ public class SpringSecurityConfig{
 		System.out.println("\nroot_dir:"+root_dir+"\nstatic_folder_path:"+static_folder_path+"\nstatic_folder_path2:"+static_folder_path2);
 		return http
 				.csrf(csrf -> csrf.disable())
+				// Une API Rest est sans état (STATELESS) d'un point de vue de la session. c'est défini ici.
 				.sessionManagement(session -> session
 			    		   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				// Les URLs / endpoints et dossiers authorisés pour les utilisateurs non-authentifiés. 
        .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                 		LocationHelpers.REGISTER_URI, 
@@ -60,33 +65,12 @@ public class SpringSecurityConfig{
                 		LocationHelpers.SWAGGER_UI_URI,
                 		LocationHelpers.SWAGGER_API_URI
                 		).permitAll()
-              
+                // Pour tout le reste il faut être authentifié
                 .anyRequest().authenticated())
-       //.anyRequest().permitAll())
        .authenticationProvider(authenticationProvider)
        
         // Add JWT token filter
         .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        
-        
-        .build();                
-		
-	}
-	
-	
-	
-	
-
-
-	
-	
-
-	
-
-	
+        .build();                	
+	}	
 }
-
-//.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-//.userDetailsService(userService).cors(Customizer.withDefaults())
-
-// .anyRequest().authenticated()

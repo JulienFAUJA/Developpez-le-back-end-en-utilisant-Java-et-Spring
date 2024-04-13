@@ -2,6 +2,9 @@ package com.openclassroom.configuration;
 
 import java.io.File;
 
+/**
+ * Classe qui répertorie tous les chemins et répertoires nécessaires à l'application.
+ */
 public class LocationHelpers {
 	
 	public final static String ROOT_DIR = System.getProperty("user.dir");
@@ -19,6 +22,8 @@ public class LocationHelpers {
 	public final static String IMAGES_URI_RECURSIVE = LocationHelpers.STATIC_DIR+"/**";
 	public final static String SWAGGER_UI_URI = "/swagger-ui/**";
 	public final static String SWAGGER_API_URI = "/v3/api-docs/**";
+	public final static String BEARER_AUTH = "bearerAuth";
+	
 	
 	public static String GeneratePath(String folder_names) {
 		String folder_tree_path = folder_names.replace(",", File.separator);
