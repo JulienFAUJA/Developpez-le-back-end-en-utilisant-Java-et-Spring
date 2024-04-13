@@ -1,12 +1,8 @@
 package com.openclassroom.dto;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-
 import com.openclassroom.models.MessageModel;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 
 public class MessageRequestDTO {
 

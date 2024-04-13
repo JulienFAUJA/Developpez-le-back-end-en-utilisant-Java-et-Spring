@@ -7,9 +7,7 @@ import java.util.Objects;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.openclassroom.models.RentalModel;
 
-import lombok.Data;
 
 
 public class RentalDTO implements Serializable{
@@ -102,30 +100,6 @@ public class RentalDTO implements Serializable{
     	
     }
     
-//    public RentalDTO(RentalModel rental) {
-//    	this.id = rental.getId();
-//		this.name = rental.getName();
-//		this.surface = rental.getSurface();
-//		this.price = rental.getPrice();
-//		this.picture = rental.getPicture();
-//		this.description = rental.getDescription();
-//		this.owner_id = rental.getOwner_id();
-//		this.created_at = rental.getCreated_at();
-//		this.updated_at = rental.getUpdated_at();
-//    }
-    
-//    public RentalDTO(Integer id, String name, Double surface, Double price, String picture, String description,
-//			Integer owner_id, Timestamp created_at, Timestamp updated_at) {
-//    	this.id = id;
-//		this.name = name;
-//		this.surface = surface;
-//		this.price = price;
-//		this.picture = picture;
-//		this.description = description;
-//		this.owner_id = owner_id;
-//		this.created_at = created_at;
-//		this.updated_at = updated_at;
-//    }
 
 	@Override
 	public String toString() {

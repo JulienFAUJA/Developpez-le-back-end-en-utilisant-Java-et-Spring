@@ -6,8 +6,6 @@ import com.openclassroom.models.RentalModel;
 
 @Repository
 public interface RentalRepository extends CrudRepository<RentalModel, Integer> {
-
-
 }
 
 

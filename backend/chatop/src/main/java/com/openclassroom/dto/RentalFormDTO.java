@@ -1,16 +1,10 @@
 package com.openclassroom.dto;
 
 
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Objects;
 
-import org.springframework.web.multipart.MultipartFile;
 
-import com.openclassroom.models.RentalModel;
 
-import lombok.Data;
 
 
 public class RentalFormDTO{

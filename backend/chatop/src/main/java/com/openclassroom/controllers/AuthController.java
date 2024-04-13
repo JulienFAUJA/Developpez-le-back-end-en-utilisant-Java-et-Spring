@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassroom.dto.MessageResponseDTO;
 import com.openclassroom.dto.TokenDTO;
-import com.openclassroom.dto.UserLoggedDTO;
 import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.services.AuthService;
@@ -43,9 +42,8 @@ private AuthService authService;
     })
 	@PostMapping(value ="/register")
 	@ResponseBody
-	public ResponseEntity<TokenDTO> postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
-		TokenDTO token = new TokenDTO(authService.register(userRegisterDTO));
-		return ResponseEntity.ok(token);
+	public ResponseEntity<?> postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+		return authService.register(userRegisterDTO);
 	}
 	
 

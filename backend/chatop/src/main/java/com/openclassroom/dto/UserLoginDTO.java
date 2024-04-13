@@ -1,13 +1,10 @@
 package com.openclassroom.dto;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 
 import com.openclassroom.models.UserModel;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 public class UserLoginDTO {
 

@@ -50,12 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     	    }
 
         String authHeader = request.getHeader("Authorization");
-        System.out.println("\n\nauthHeader token:"+authHeader);
-        System.out.println("Response:"+response.getStatus());
         // Vérifie si le Header existe et s'il contient le Token
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-        	System.out.println("ERREUR TOKEN:"+authHeader);
-        	System.out.println("Response:"+response.getStatus());
             filterChain.doFilter(request,response);
             return;
         }
@@ -64,47 +60,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String email = jwtService.extractEmail(token);
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.loadUserByUsername(email);
-            System.out.println("userDetails:"+userDetails.toString());
             if(jwtService.isValid(token, email)) {
             	if(authToken==null) {
-                	System.out.print("[JwtAuthenticationFilter][doFilterInternal][Before:UsernamePasswordAuthenticationToken]\n");
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,null, userDetails.getAuthorities());
-                	System.out.println("[JwtAuthenticationFilter][doFilterInternal][After:UsernamePasswordAuthenticationToken] authToken:"+authToken.toString()+"\n");
-                	System.out.println("[authToken!=null- Before]:"+(authToken!=null)+"\n");
-                	System.out.println("request:"+request.getContentType()+"\n");
                 	authToken.setDetails(
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-//                	if(authToken.getDetails()==null) {
-//                		setDetailContext(request, authToken);
-//                	}
-                	
                 }
-                
-                
             	else if(authToken!=null && authToken.getDetails()==null) {
             		setDetailContext(request, authToken);
             	}
             }
-            
-            
         }
         filterChain.doFilter(request, response);
-        
-
-
     }
 
 	private void setDetailContext(HttpServletRequest request, UsernamePasswordAuthenticationToken authToken) {
-		System.out.println("[authToken.setDetails - Before]:"+authToken.toString());
 		authToken.setDetails(
 		        new WebAuthenticationDetailsSource().buildDetails(request)
 		);
-		System.out.println("[authToken.setDetails - After]:"+authToken.toString());
-
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		System.out.println("authToken:"+authToken.toString());
 	}
 }

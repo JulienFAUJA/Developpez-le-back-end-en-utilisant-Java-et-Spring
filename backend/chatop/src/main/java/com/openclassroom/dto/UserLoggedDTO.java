@@ -2,9 +2,6 @@ package com.openclassroom.dto;
 
 import java.sql.Timestamp;
 
-import lombok.Data;
-
-
 public class UserLoggedDTO {
 	
 	private Integer id;

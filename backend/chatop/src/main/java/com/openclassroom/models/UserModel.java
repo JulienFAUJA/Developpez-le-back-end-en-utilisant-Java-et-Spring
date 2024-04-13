@@ -114,14 +114,6 @@ public class UserModel implements UserDetails, Principal{
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
-	
-//	public UserModel(String username, String name, String password, Timestamp created_at, Timestamp updated_at) {
-//		this.username = username;
-//		this.name = name;
-//		this.password = password;
-//		this.created_at = created_at;
-//		this.updated_at = updated_at;
-//	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

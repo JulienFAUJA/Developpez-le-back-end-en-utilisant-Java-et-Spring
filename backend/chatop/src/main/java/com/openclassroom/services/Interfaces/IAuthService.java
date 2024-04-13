@@ -13,7 +13,7 @@ public interface IAuthService {
 	
 	ResponseEntity<?> me();
 	
-	String register(UserRegisterDTO request);
+	ResponseEntity<?> register(UserRegisterDTO request);
 	
 	ResponseEntity<?> authenticating(UserLoginDTO request);
 

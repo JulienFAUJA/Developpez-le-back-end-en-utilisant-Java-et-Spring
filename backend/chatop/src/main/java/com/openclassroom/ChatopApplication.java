@@ -16,15 +16,5 @@ public class ChatopApplication {
 		SpringApplication.run(ChatopApplication.class, args);
 	}
 	
-//	@Bean
-//    public WebMvcConfigurer webMvcConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//                registry.addResourceHandler("/images/**")
-//                        .addResourceLocations("file:"+LocationHelpers.STATIC_DIR);
-//            }
-//        };
-//    }
 
 }

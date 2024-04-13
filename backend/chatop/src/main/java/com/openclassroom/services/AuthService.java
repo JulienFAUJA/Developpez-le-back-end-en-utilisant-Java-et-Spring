@@ -81,18 +81,20 @@ public class AuthService implements IAuthService{
     }
     
     
-    public String register(UserRegisterDTO request) {
+    public ResponseEntity<?> register(UserRegisterDTO request) {
     	UserModel user = new UserModel(request.getEmail(), request.getName(), passwordEncoder.encode(request.getPassword()));
     	String jwt = jwtService.generateToken(request.getEmail());
         // vérifie si existe déjà
         if(userRepository.findByEmail(request.getEmail()).isPresent()) {
-        	System.out.println("User already exist:"+request.toString());
+        	MessageResponseDTO errorResponse = new MessageResponseDTO("Unauthorized: ");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
         else {
         	user = userRepository.save(user);
         }
         System.out.println("jwt:"+jwt);
-        return jwt;
+        TokenDTO token = new TokenDTO(jwt);
+	    return ResponseEntity.ok(token);
 
     }
 
