@@ -46,12 +46,8 @@ public class RentalController {
 	@GetMapping
 	@ResponseBody
 	public ResponseEntity<RentalsResponseDTO> getAllRentals() {
-		System.out.println("Rentals...");
 		List<RentalFormDTO> rentals = rentalService.getRentals();
 		RentalsResponseDTO response = new RentalsResponseDTO(rentals);
-//		List<RentalFormDTO> rentals_forms = new ArrayList<>();
-//		rentalService.getRentals().forEach(r -> rentals_forms.add(r));
-		System.out.println("RentalController:"+response);
 		return ResponseEntity.ok(response);
 	}
 	
@@ -65,12 +61,6 @@ public class RentalController {
 		return rentalService.getRentalById(id);
 	}
 	
-//	@PostMapping
-//	public String postRental(
-//			 RentalDTO rentalDTO) throws IOException {
-//		System.out.println("rentalDTO:"+rentalDTO.toString());
-//		return this.rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
-//	}
 	
 	@PostMapping
 	public RentalResponseDTO postRental(RentalDTO rentalDTO) throws IOException {
@@ -82,11 +72,10 @@ public class RentalController {
 		return rentalResponseDTO;
 	}
 	
-	@PutMapping(value="{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public RentalResponseDTO setRentalForId(@PathVariable("id") Integer id, RentalDTO rentalDTO) {
-		String rentalMessage = rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
+	@PutMapping(value="{id}")
+	public RentalResponseDTO setRentalForId(@PathVariable("id") Integer id, RentalFormDTO rentalFormDTO) {
+		String rentalMessage = rentalService.updateRental(id, rentalFormDTO);
 		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO(rentalMessage);
-		System.out.print("RentalController:"+rentalResponseDTO.getMessage());
 		return rentalResponseDTO;
 	}
 

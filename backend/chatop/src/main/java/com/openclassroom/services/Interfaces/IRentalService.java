@@ -15,5 +15,5 @@ public interface IRentalService {
 	
 	String postRental(MultipartFile picture, RentalDTO rentalDTO);
 	
-	String updateRental(Integer id, RentalDTO rentalDTO);
+	String updateRental(Integer id, RentalFormDTO rentalFormDTO);
 }

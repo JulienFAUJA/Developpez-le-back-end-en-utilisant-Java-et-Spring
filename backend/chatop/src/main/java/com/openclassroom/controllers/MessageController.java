@@ -1,9 +1,7 @@
 package com.openclassroom.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassroom.dto.MessageRequestDTO;
 import com.openclassroom.dto.MessageResponseDTO;
-import com.openclassroom.models.MessageModel;
 import com.openclassroom.services.JWTokenService;
 import com.openclassroom.services.MessageService;
 
@@ -35,11 +32,10 @@ public class MessageController {
 	
 	@PostMapping
 	@ResponseBody
-	public MessageResponseDTO postMessage(@Valid @RequestBody MessageRequestDTO messageDTO) {
+	public ResponseEntity<MessageResponseDTO> postMessage(@Valid @RequestBody MessageRequestDTO messageDTO) {
 		String messageCreated = messageService.postMessage(messageDTO);
 		MessageResponseDTO messageResponseDTO= new MessageResponseDTO(messageCreated);
-		System.out.print("MessageController:"+messageCreated.toString());
-		return messageResponseDTO;
+		return ResponseEntity.ok(messageResponseDTO);
 	}
 	
 //	@GetMapping("/all")

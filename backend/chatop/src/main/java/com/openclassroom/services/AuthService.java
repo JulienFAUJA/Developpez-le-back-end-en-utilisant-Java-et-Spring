@@ -41,7 +41,6 @@ public class AuthService implements IAuthService{
     
     public UserModel getCurrentUser(String label){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("authentication:"+label+authentication.toString());
         UserModel userModel = (UserModel) authentication.getPrincipal();
         return userModel;
     }
@@ -66,11 +65,9 @@ public class AuthService implements IAuthService{
     
     public UserLoggedDTO me(){
     	UserModel UserCurrent = getCurrentUser("/Me");
-    	System.out.println("UserCurrent:"+UserCurrent.toString());
         String email = UserCurrent.getUsername();
         UserModel user = this.userRepository.findByEmail(email).orElse(null);
         UserLoggedDTO userLoggedDto = modelMapper.map(user, UserLoggedDTO.class);
-        System.out.println("UserModel byEmail:"+user.toString()+"UserCurrent:"+UserCurrent.toString()+"\nuserLoggedDto:"+userLoggedDto.toString());
         return userLoggedDto;
     }
     
@@ -91,7 +88,6 @@ public class AuthService implements IAuthService{
     }
 
     public String authenticating(UserLoginDTO request) {
-    	    	System.out.println("request:"+request.toString());
     	    	Authentication authentication;
     	    try {
     	    	UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -99,12 +95,6 @@ public class AuthService implements IAuthService{
                         request.getPassword()
                 );
     	    	authentication = authenticationManager.authenticate(authToken);
-    	    	SecurityContextHolder.getContext().setAuthentication(authToken);
-    	    	
-    	    	System.out.println("authToken:"+authToken.toString());
-    	    	
-    	    	System.out.println("authentication:"+authentication.toString());
-    	    	System.out.println("getContext:"+SecurityContextHolder.getContext());
     	    }
     	    catch(Exception ex) {
     	    	System.out.println("[Exception][AuthService][authenticating]:"+ex.getMessage());
@@ -115,7 +105,6 @@ public class AuthService implements IAuthService{
     	    String email = user.getUsername();
     	    String jwt = jwtService.generateToken(email);
     	    System.out.println("jwt:"+jwt);
-    	    System.out.println("userModel:"+user.toString());
     	    return jwt;
     	    	
         

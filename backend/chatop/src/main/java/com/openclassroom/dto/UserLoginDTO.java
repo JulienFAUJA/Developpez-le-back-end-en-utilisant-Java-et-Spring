@@ -5,9 +5,17 @@ import java.time.Instant;
 
 import com.openclassroom.models.UserModel;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class UserLoginDTO {
 
+	@NotBlank(message="L'adresse email est obligatoire...")
+    @Email(message = "Le format de l'adresse mail n'est pas valide...")
 	private String email;
+	
+	@NotBlank(message="Le mot de passe est obligatoire...")
 	private String password;
 
 	
@@ -36,7 +44,6 @@ public class UserLoginDTO {
 	public UserLoginDTO(String email, String password) {
 		this.email = email;
 		this.password = password;
-		System.out.println("email:"+email+"password:"+password);
 	}
 	
 	

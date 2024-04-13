@@ -5,11 +5,24 @@ import java.time.Instant;
 
 import com.openclassroom.models.UserModel;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class UserRegisterDTO {
 	
 	private Integer id;
+	
+    @NotBlank(message="L'adresse email est obligatoire...")
+    @Size(max=255, message = "L'adresse email est trop longue...")
+    @Email(message = "Le format de l'adresse mail n'est pas valide...")
 	private String email;
+    
+    @NotBlank(message="Le nom est obligatoire")
+    @Size(max=255, message = "Le nom contient trop de caractères")
 	private String name;
+    
+    @NotBlank(message="Le mot de passe est obligatoire...")
 	private String password;
 	private Timestamp  created_at;
 	private Timestamp  updated_at;

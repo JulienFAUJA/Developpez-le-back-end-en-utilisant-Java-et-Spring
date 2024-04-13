@@ -45,13 +45,14 @@ public class RentalService implements IRentalService{
     }
     
    
-	
+	@Override 
 	public List<RentalFormDTO> getRentals(){
 		List<RentalFormDTO> rentals = new ArrayList<>();
 		this.rentalRepository.findAll().forEach(r -> rentals.add(modelMapper.map(r, RentalFormDTO.class))); //this.convertToDTO(r)
 		return rentals;
 	}
 	
+	@Override 
 	public RentalFormDTO getRentalById(Integer id){
 		Optional<RentalModel> rental = this.rentalRepository.findById(id);
 		
@@ -60,8 +61,8 @@ public class RentalService implements IRentalService{
 		return modelMapper.map(rental.orElseThrow(), RentalFormDTO.class);
 	}
 	
+	@Override 
 	public String postRental(MultipartFile picture, RentalDTO rentalDTO) {
-		
 		RentalModel rental = modelMapper.map(rentalDTO, RentalModel.class);
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -101,40 +102,36 @@ public class RentalService implements IRentalService{
 //		catch(Exception ex) {
 //			StatusMessage=isAlreadyPresent ? "Erreur de mise à jour de l'annonce..." : "Erreur de publication de l'annonce...";
 //		}
-		return "";
+		return "Annonce postée avec succès...";
 		
         		
 	}
 	
-	public String updateRental(Integer id, RentalDTO rentalDTO) {
+	@Override 
+	public String updateRental(Integer id, RentalFormDTO rentalFormDTO) {
+		RentalModel rental = modelMapper.map(rentalFormDTO, RentalModel.class);
+		Optional<RentalModel> rental_by_id = rentalRepository.findById(id);
+		if(rental_by_id != null) {
+			rental.setPicture(rental_by_id.get().getPicture());
+			rental.setCreated_at(rental_by_id.get().getCreated_at());
+		}
 		
-		RentalModel rental = modelMapper.map(rentalDTO, RentalModel.class);
-
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserModel currentUser = (UserModel) authentication.getPrincipal();
         Integer currentUserId = currentUser.getId();
-		rental.CreateNow();
+		rental.UpdateNow();
 		rental.setOwner_id(currentUserId);
-		//rental.setUser(currentUser);
 		
 		try {
 			rentalRepository.save(rental);
 		}
 		catch(Exception ex) {
 		}
-//		String StatusMessage="Annonce postée avec succès..."; 
-//		boolean isAlreadyPresent = rentalRepository.findById(rentalDTO.getId()) != null;
-//		System.out.println("rentalDTO:"+isAlreadyPresent != null ? "[UPDATE]" : "[POST]"+rentalDTO.toString());
-//		try {
-//			rentalRepository.save(rental);
-//			StatusMessage=isAlreadyPresent ? "Annonce mise à jour avec succès..." : "Annonce postée avec succès...";
-//		}
-//		catch(Exception ex) {
-//			StatusMessage=isAlreadyPresent ? "Erreur de mise à jour de l'annonce..." : "Erreur de publication de l'annonce...";
-//		}
-		return "";
+		return "Annonce modifiée avec succès...";
 		
         		
 	}
+
+	
 
 }

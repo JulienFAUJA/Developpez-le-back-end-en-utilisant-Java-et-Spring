@@ -5,6 +5,7 @@ import java.time.Instant;
 
 import com.openclassroom.models.MessageModel;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 public class MessageRequestDTO {
@@ -12,6 +13,8 @@ public class MessageRequestDTO {
 	private Integer id;
     private Integer rental_id;
     private Integer user_id;
+    
+    @NotBlank(message="L'adresse email est obligatoire...")
     private String message;
     
     

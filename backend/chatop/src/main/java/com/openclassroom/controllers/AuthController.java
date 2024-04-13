@@ -1,7 +1,7 @@
 package com.openclassroom.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +14,6 @@ import com.openclassroom.dto.UserLoggedDTO;
 import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.services.AuthService;
-import com.openclassroom.services.JWTokenService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,16 +27,10 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthController {
 	
-
-
 @Autowired
 private AuthService authService;
 	
 
-//	public AuthController(AuthenticationManager authenticationManager, JWTokenService jWTokenService) {
-//		System.out.println("AuthController:constructor..."+authenticationManager.getClass().toString());
-//	}
-	
 	@Operation(summary = "Création de compte utilisateur", description = "Permet de créer un compte utilisateur.")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utilisateur enregistré avec succès...",
@@ -47,13 +40,10 @@ private AuthService authService;
     })
 	@PostMapping(value ="/register")
 	@ResponseBody
-	public TokenDTO postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
-		System.out.print("[postRegister] userRegisterDTO:"+userRegisterDTO.toString());
+	public ResponseEntity<TokenDTO> postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
 		TokenDTO token = new TokenDTO(authService.register(userRegisterDTO));
-		return token;
+		return ResponseEntity.ok(token);
 	}
-	
-
 	
 	@Operation(summary = "Connexion", description = "Permet à un utilisateur de se connecter à son profil avec ses identifiants.")
 	@ApiResponses(value = {
@@ -65,22 +55,15 @@ private AuthService authService;
                     content = {@Content(mediaType = "application/json")}),
     })
 	@PostMapping(value ="/login", consumes={"application/json"})
-    public TokenDTO login(@RequestBody(required = true) UserLoginDTO userLoginDTO) {
+    public ResponseEntity<TokenDTO> login(@Valid @RequestBody(required = true) UserLoginDTO userLoginDTO) {
 		TokenDTO token = new TokenDTO(authService.authenticating(userLoginDTO));
-		return token;
+		return ResponseEntity.ok(token);
     }
 	
 	@Operation(summary = "Page de profil", description = "Page deu profil de l'utilisateur connecté")
 	@GetMapping(value ="/me")
-	public UserLoggedDTO getMe() {
+	public ResponseEntity<UserLoggedDTO> getMe() {
 		UserLoggedDTO userLoggedDto = this.authService.me();
-		System.out.println("userLoggedDto:retourné dans Angular:"+userLoggedDto.toString());
-		return userLoggedDto;
-		
+		return ResponseEntity.ok(userLoggedDto);	
 	}
-	
-	
-	
-
 }
-//
