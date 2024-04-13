@@ -2,17 +2,18 @@ package com.openclassroom.services;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 import java.util.UUID;
+
+
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.Resource;
+
 import com.openclassroom.configuration.LocationHelpers;
 
 @Service
@@ -21,11 +22,10 @@ public class FileService {
 	private final Path rootLocation;
 
     public FileService() {
-        //this.rootLocation = Paths.get(storageLocation);
         this.rootLocation = Paths.get(LocationHelpers.STATIC_DIR);
     }
     
-    public String save(MultipartFile file) throws Exception {
+    public String save1(MultipartFile file) throws Exception {
         if (file.isEmpty()) {throw new IOException("[file.isEmpty] Erreur de l'enregistrement du fichier...");}
 
         String originalName = file.getOriginalFilename();
@@ -51,22 +51,25 @@ public class FileService {
         //return destFile.toString();
         
      // Retournez l'URL de l'image
-        return getImageUrl(originalName, destFile).toString();
+        return "http://localhost:8080/api/static/images/" +destFile;
     }
     
-    public String getImageUrl(String filename, Path destFile) throws Exception {
-//    	Resource resource;
-//		try {
-//			resource = new UrlResource(destFile.toString());
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			resource = new UrlResource("http://localhost:8080/api/images/" +filename);
-//		}
-//		System.out.println("resource:"+resource);
-//    	return resource;
-    	return "http://localhost:8080/api/static/" +filename;
-        //return LocationHelpers.STATIC_DIR+"/" + filename;
+    public String save(MultipartFile file) throws Exception {
+    	String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+
+        Path uploadPath = Paths.get("src/main/resources/static/images/");
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        String serverUrl="http://localhost:8080";
+        // Construit l'URL pour accéder à l'image via le serveur et la retourne.
+        return serverUrl + "/images/" + fileName;
     }
+    
+    
 
 }

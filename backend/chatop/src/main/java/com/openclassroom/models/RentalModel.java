@@ -22,7 +22,7 @@ import lombok.Data;
 @Table(name = "rentals")
 public class RentalModel implements Serializable{
 
-	@Id
+	 @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Integer id;
      private String name;

@@ -1,7 +1,5 @@
 package com.openclassroom.services;
 
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.dto.RentalFormDTO;
 import com.openclassroom.models.RentalModel;
 import com.openclassroom.models.UserModel;
-
-import org.springframework.web.multipart.MultipartFile;
+import com.openclassroom.repositories.MessageRepository;
 import com.openclassroom.repositories.RentalRepository;
 
 @Service
@@ -25,6 +23,9 @@ public class RentalService {
 	
 	@Autowired
 	private RentalRepository rentalRepository;
+	
+	@Autowired
+	private MessageRepository messageRepository;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -51,6 +52,7 @@ public class RentalService {
 	
 	public RentalFormDTO getRentalById(Integer id){
 		Optional<RentalModel> rental = this.rentalRepository.findById(id);
+		
 		System.out.println("RentalService -> rental.orElseThrow():"+rental.orElseThrow());
 		System.out.println("RentalService -> convertToDTO(rental.orElseThrow()):"+convertToDTO(rental.orElseThrow()));
 		return modelMapper.map(rental.orElseThrow(), RentalFormDTO.class);
@@ -82,17 +84,22 @@ public class RentalService {
 		} else {
 			rental.setPicture(altPhotoText);
 		}
-		String StatusMessage="Annonce postée avec succès..."; 
-		boolean isAlreadyPresent = rentalRepository.findById(rentalDTO.getId()) != null;
-		System.out.println("rentalDTO:"+isAlreadyPresent != null ? "[UPDATE]" : "[POST]"+rentalDTO.toString());
 		try {
 			rentalRepository.save(rental);
-			StatusMessage=isAlreadyPresent ? "Annonce mise à jour avec succès..." : "Annonce postée avec succès...";
 		}
 		catch(Exception ex) {
-			StatusMessage=isAlreadyPresent ? "Erreur de mise à jour de l'annonce..." : "Erreur de publication de l'annonce...";
 		}
-		return StatusMessage;
+//		String StatusMessage="Annonce postée avec succès..."; 
+//		boolean isAlreadyPresent = rentalRepository.findById(rentalDTO.getId()) != null;
+//		System.out.println("rentalDTO:"+isAlreadyPresent != null ? "[UPDATE]" : "[POST]"+rentalDTO.toString());
+//		try {
+//			rentalRepository.save(rental);
+//			StatusMessage=isAlreadyPresent ? "Annonce mise à jour avec succès..." : "Annonce postée avec succès...";
+//		}
+//		catch(Exception ex) {
+//			StatusMessage=isAlreadyPresent ? "Erreur de mise à jour de l'annonce..." : "Erreur de publication de l'annonce...";
+//		}
+		return "";
 		
         		
 	}

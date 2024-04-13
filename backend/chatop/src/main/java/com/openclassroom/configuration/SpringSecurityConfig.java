@@ -48,7 +48,7 @@ public class SpringSecurityConfig{
 		String root_dir = System.getProperty("user.dir");
 		String static_folder_path = root_dir+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static";
 		String static_folder_path2 = LocationHelpers.STATIC_DIR;
-		System.out.println("\nroot_dir:"+root_dir+"\nstatic_folder_path:"+static_folder_path+"\nstatic_folder_path2:"+static_folder_path2);
+		System.out.println("\nroot_dir:"+root_dir+"\nstatic_folder_path:"+LocationHelpers.STATIC_DIR+"\nstatic_folder_path2:"+static_folder_path2);
 		return http
 				.csrf(csrf -> csrf.disable())
 				// Une API Rest est sans état (STATELESS) d'un point de vue de la session. c'est défini ici.
@@ -59,7 +59,8 @@ public class SpringSecurityConfig{
                 .requestMatchers(
                 		LocationHelpers.REGISTER_URI, 
                 		LocationHelpers.LOGIN_URI, 
-                		LocationHelpers.STATIC_DIR,
+                		
+                		"images/**",
                 		LocationHelpers.STATIC_URI,
                 		LocationHelpers.STATIC_URI_RECURSIVE,
                 		LocationHelpers.SWAGGER_UI_URI,

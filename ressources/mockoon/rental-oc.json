@@ -17,7 +17,7 @@
           "uuid": "5581d247-579a-40ac-a82a-89cddbc9ef5d",
           "body": "{\n  \"token\": \"jwt\"\n}",
           "latency": 0,
-          "statusCode": 200,
+          "statusCode": 401,
           "label": "",
           "headers": [],
           "filePath": "",

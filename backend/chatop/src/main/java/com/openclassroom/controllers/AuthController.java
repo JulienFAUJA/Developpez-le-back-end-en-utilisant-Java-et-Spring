@@ -34,9 +34,9 @@ public class AuthController {
 private AuthService authService;
 	
 
-	public AuthController(AuthenticationManager authenticationManager, JWTokenService jWTokenService) {
-		System.out.println("AuthController:constructor..."+authenticationManager.getClass().toString());
-	}
+//	public AuthController(AuthenticationManager authenticationManager, JWTokenService jWTokenService) {
+//		System.out.println("AuthController:constructor..."+authenticationManager.getClass().toString());
+//	}
 	
 	@Operation(summary = "Création de compte utilisateur", description = "Permet de créer un compte utilisateur.")
 	@ApiResponses(value = {

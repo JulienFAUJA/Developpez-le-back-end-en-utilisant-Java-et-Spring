@@ -1,7 +1,5 @@
 package com.openclassroom.services;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,9 +15,10 @@ import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
 import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.UserRepository;
+import com.openclassroom.services.Impl.IAuthService;
 
 @Service
-public class AuthService {
+public class AuthService implements IAuthService{
 	
 	@Autowired
 	private UserRepository userRepository;
