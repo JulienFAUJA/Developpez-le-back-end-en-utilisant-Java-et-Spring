@@ -7,6 +7,8 @@ public class LocationHelpers {
 	public final static String ROOT_DIR = System.getProperty("user.dir");
 	public final static String STATIC_DIR = LocationHelpers.GeneratePath("src,main,resources,static");
 	public final static String ROOT_URI = "/api";
+	public final static String STATIC_URI =  LocationHelpers.ROOT_URI+"/static";
+	public final static String STATIC_URI_RECURSIVE =  LocationHelpers.ROOT_URI+"/static";
 	public final static String AUTH_URI = LocationHelpers.ROOT_URI+"/auth";
 	public final static String REGISTER_URI = LocationHelpers.AUTH_URI+"/register";
 	public final static String LOGIN_URI = LocationHelpers.AUTH_URI+"/login";
@@ -14,7 +16,7 @@ public class LocationHelpers {
 	public final static String USER_URI = LocationHelpers.ROOT_URI+"/user";
 	public final static String RENTALS_URI = LocationHelpers.ROOT_URI+"/rentals";
 	public final static String MESSAGES_URI = LocationHelpers.ROOT_URI+"/messages";
-	public final static String IMAGES_URI_RECURSIVES = LocationHelpers.STATIC_DIR+"/**";
+	public final static String IMAGES_URI_RECURSIVE = LocationHelpers.STATIC_DIR+"/**";
 	public final static String SWAGGER_UI_URI = "/swagger-ui/**";
 	public final static String SWAGGER_API_URI = "/v3/api-docs/**";
 	

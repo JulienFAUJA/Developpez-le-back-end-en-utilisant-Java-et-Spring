@@ -57,7 +57,7 @@ public class RentalService {
 	}
 	
 	public String postRental(MultipartFile picture, RentalDTO rentalDTO) {
-		System.out.println("rentalDTO:"+rentalDTO.toString());
+		
 		RentalModel rental = modelMapper.map(rentalDTO, RentalModel.class);
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -82,13 +82,18 @@ public class RentalService {
 		} else {
 			rental.setPicture(altPhotoText);
 		}
+		String StatusMessage="Annonce postée avec succès..."; 
+		boolean isAlreadyPresent = rentalRepository.findById(rentalDTO.getId()) != null;
+		System.out.println("rentalDTO:"+isAlreadyPresent != null ? "[UPDATE]" : "[POST]"+rentalDTO.toString());
 		try {
 			rentalRepository.save(rental);
-			return "Annonce postée avec succès..."; 
+			StatusMessage=isAlreadyPresent ? "Annonce mise à jour avec succès..." : "Annonce postée avec succès...";
 		}
 		catch(Exception ex) {
-			return ex.getMessage();
+			StatusMessage=isAlreadyPresent ? "Erreur de mise à jour de l'annonce..." : "Erreur de publication de l'annonce...";
 		}
+		return StatusMessage;
+		
         		
 	}
 

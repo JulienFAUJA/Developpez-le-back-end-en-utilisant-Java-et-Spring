@@ -78,13 +78,16 @@ public class RentalController {
 		//return this.rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
 		String rentalMessage = rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
 		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO(rentalMessage);
-		System.out.print("MessageController:"+rentalResponseDTO.getMessage());
+		System.out.print("RentalController:"+rentalResponseDTO.getMessage());
 		return rentalResponseDTO;
 	}
 	
-	@PutMapping("{id}")
-	public String setRentalForId(@PathVariable("id") Integer id) {
-		return "Welcome, User";
+	@PutMapping(value="{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public RentalResponseDTO setRentalForId(@PathVariable("id") Integer id, RentalDTO rentalDTO) {
+		String rentalMessage = rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
+		RentalResponseDTO rentalResponseDTO= new RentalResponseDTO(rentalMessage);
+		System.out.print("RentalController:"+rentalResponseDTO.getMessage());
+		return rentalResponseDTO;
 	}
 
 }
