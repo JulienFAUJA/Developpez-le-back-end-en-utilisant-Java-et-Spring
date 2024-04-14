@@ -10,7 +10,7 @@
 
 ## Introduction
 
-Cette application permet de gérer les biens locatifs d'une agence immobilière. Le focus y est mis sur la partie Back-end qui est développé en **[Java](#java)** avec le **[framework](#framework)** **[Spring](#spring)** et spécifiquement **[Spring Security](#sping_security)**. Quant à la partie Front-end, elle est développée en Angular, qui est un framework **[Typescript](#typescript)**, qui lui-même est un langage basé sur **[Javascript](#javascript)**.
+Cette application permet de gérer les biens locatifs d'une agence immobilière. Le focus y est mis sur la partie Back-end qui est développée en **[Java](#java)** avec le **[framework](#framework)** **[Spring](#spring)** et spécifiquement **[Spring Security](#spring_security)**. Quant à la partie Front-end, elle est développée en **[Angular](#angular)**, qui est un framework **[Typescript](#typescript)**, qui lui-même est un langage basé sur **[Javascript](#javascript)**.
 
 Ce projet a été généré avec [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0. ![Angular](https://img.shields.io/badge/angular_CLI-v14.1.0-blue)
 
@@ -36,7 +36,17 @@ Exécutez `ng serve` pour démarrer le serveur de développement. Accédez à `h
 
 ### Lancez le Back-end:
 
+Lancement en Développement:
 pour lancer le Back-end dans un environnement de développement vous devez ouvrir le dossier `backend` avec le logiciel Eclipse ou autre en fonction de vos préférences et cliquer sur `run` ou `build` selon votre logiciel.
+
+Lancement en Production:
+Exécutez la commande:
+
+> `mvn clean package`
+
+Cela va compiler votre projet, exécuter les tests (s'il y en a), et générer le fichier JAR dans le répertoire target.
+
+Une fois le fichier JAR généré, vous pouvez l'exécuter en utilisant la commande java -jar nom_du_fichier.jar.
 
 ### Base de données (MySQL):
 
@@ -54,7 +64,11 @@ Ce qui créera la base de données.
 
 Ce qui permettra de sélectionner la base de données nouvellement créée pour travailler dessus pendant les étapes suivantes.
 
-> SOURCE `chemin vers le fichier script2.sql`;
+en faisant SOURCE `chemin vers le fichier script2.sql`;
+
+ex:
+
+> SOURCE `ressources/sql/script.sql`;
 
 Ce qui lancera les instructions incluses dans le fichier de script.
 
@@ -210,37 +224,35 @@ Insère quatre messages en base de données (dans la table MESSAGES).
 
 ---
 
-## Ressources
+## Ressources de développement
 
-### Mockoon env
+### Environement Mockoon
 
-Download Mockoon here: https://mockoon.com/download/
+Mockoon était là pour permettre au développeur d'activer les routes du projet.
 
-After installing you could load the environement
+Lien de téléchargement de Mockoon: https://mockoon.com/download/
+
+Après l'installation on le lance et on importe le fichier json contenant les routes
 
 > ressources/mockoon/rental-oc.json
 
-directly inside Mockoon
+En faisant:
 
 > File > Open environmement
 
-For launching the Mockoon server click on play bouton
+Pour le lancer on clique sur le bouton `play`
 
-Mockoon documentation: https://mockoon.com/docs/latest/about/
+Documentation de Mockoon: https://mockoon.com/docs/latest/about/
 
-### Postman collection
+### collection Postman
 
-For Postman import the collection
+Postman permettait de tester les routes du projet. Il fallait charger le json suivant:
 
 > ressources/postman/rental.postman_collection.json
 
-by following the documentation:
+La documentation de Postman:
 
 https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman
-
-### MySQL
-
-SQL script for creating the schema is available `ressources/sql/script.sql`
 
 ---
 

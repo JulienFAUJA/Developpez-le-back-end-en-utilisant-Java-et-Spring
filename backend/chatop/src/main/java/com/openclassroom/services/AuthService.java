@@ -92,7 +92,6 @@ public class AuthService implements IAuthService{
         else {
         	user = userRepository.save(user);
         }
-        System.out.println("jwt:"+jwt);
         TokenDTO token = new TokenDTO(jwt);
 	    return ResponseEntity.ok(token);
 
@@ -116,7 +115,6 @@ public class AuthService implements IAuthService{
     	    UserModel user = (UserModel)authentication.getPrincipal();
     	    String email = user.getUsername();
     	    String jwt = jwtService.generateToken(email);
-    	    System.out.println("jwt:"+jwt);
     	    TokenDTO token = new TokenDTO(jwt);
     	    return ResponseEntity.ok(token);
     	    	

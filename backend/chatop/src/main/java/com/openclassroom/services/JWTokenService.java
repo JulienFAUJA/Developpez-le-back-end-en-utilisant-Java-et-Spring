@@ -43,10 +43,8 @@ public class JWTokenService implements IJWTokenService{
                     .parseSignedClaims(token);
             validToken=true;
         } catch (Exception ex) {
-        	System.out.println(ex.getMessage());
         	validToken=false;
         }
-        System.out.println("Token comparaison:"+subject +" -> "+email+"\nusername==email:"+subject.equals(email)+"\n!isTokenExpired(token):"+!isTokenExpired(token)+"\nvalidToken:"+validToken);
         return (subject.equals(email) && !isTokenExpired(token) && validToken);
     }
 
