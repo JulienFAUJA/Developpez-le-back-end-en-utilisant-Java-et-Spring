@@ -256,6 +256,11 @@ https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#
 
 ---
 
+## Swagger:
+
+L'url du Swagger:
+http://localhost:8080/swagger-ui/index.html
+
 ## Index
 
 ---
