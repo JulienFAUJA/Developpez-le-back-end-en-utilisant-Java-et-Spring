@@ -40,13 +40,7 @@ public class RentalService implements IRentalService{
     private FileService fileService;
 	
 	
-    private RentalModel convertToEntity(RentalDTO rentalDto) {
-        return modelMapper.map(rentalDto, RentalModel.class);
-    }
     
-    private RentalDTO convertToDTO(RentalModel rental) {
-        return modelMapper.map(rental, RentalDTO.class);
-    }
     
    
 	@Override 

@@ -1,6 +1,5 @@
 package com.openclassroom.configuration;
 
-import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

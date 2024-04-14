@@ -57,8 +57,6 @@ public class UserService implements UserDetailsService, IUserService {
 	
 	public ResponseEntity<?> getUserById(Integer id){
 		Optional<UserModel> user = this.userRepository.findById(id);
-		System.out.println("UserService -> user.orElseThrow():"+user.orElseThrow());
-		System.out.println("UserService -> convertToDTO(user.orElseThrow()):"+convertToDTO(user.orElseThrow()));
 		return ResponseEntity.status(HttpStatus.OK).body(convertToDTO(user.orElseThrow()));
 	}
 	
