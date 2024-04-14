@@ -1,7 +1,9 @@
 package com.openclassroom.controllers;
 
 import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,12 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.dto.RentalFormDTO;
 import com.openclassroom.dto.RentalResponseDTO;
 import com.openclassroom.dto.RentalsResponseDTO;
-import com.openclassroom.services.RentalService;
-
+import com.openclassroom.services.Interfaces.IRentalService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -29,7 +31,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class RentalController {
 	
 	@Autowired
-    private RentalService rentalService;
+    private IRentalService rentalService;
 	
 	
 	@Operation(summary = "Récupération de toutes les annonces", description = "Permet d'afficher les annonces.")
@@ -42,7 +44,8 @@ public class RentalController {
 	@GetMapping 
 	@ResponseBody
 	public ResponseEntity<?> getAllRentals() {
-		return rentalService.getRentals();
+		return ResponseEntity.status(HttpStatus.OK).body(rentalService.getRentals());
+		
 	}
 	
   
@@ -55,7 +58,7 @@ public class RentalController {
     })
 	@GetMapping("{id}")
 	public ResponseEntity<?> getRentalById(@PathVariable("id") Integer id) {
-		return rentalService.getRentalById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(rentalService.getRentalById(id));
 	}
 	
 	@Operation(summary = "Publication d'une annonce", description = "Publication d'une annonce et sauvegarde en base de données...")
@@ -67,7 +70,7 @@ public class RentalController {
     })
 	@PostMapping
 	public ResponseEntity<?> postRental(RentalDTO rentalDTO) throws IOException {
-		return rentalService.postRental(rentalDTO.getPicture(), rentalDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(rentalService.postRental(rentalDTO.getPicture(), rentalDTO));
 	}
 	
 	@Operation(summary = "Modification d'une annonce", description = "Modification d'une annonce en fonction de son id et sauvegarde en base de données...")
@@ -79,7 +82,7 @@ public class RentalController {
     })
 	@PutMapping(value="{id}")
 	public ResponseEntity<?> setRentalForId(@PathVariable("id") Integer id, RentalFormDTO rentalFormDTO) {
-		return rentalService.updateRental(id, rentalFormDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(rentalService.updateRental(id, rentalFormDTO));
 	}
 
 }

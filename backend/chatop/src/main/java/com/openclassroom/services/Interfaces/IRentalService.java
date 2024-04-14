@@ -2,19 +2,20 @@ package com.openclassroom.services.Interfaces;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.openclassroom.dto.RentalDTO;
 import com.openclassroom.dto.RentalFormDTO;
+import com.openclassroom.dto.RentalResponseDTO;
+import com.openclassroom.dto.RentalsResponseDTO;
 
 public interface IRentalService {
 
-	ResponseEntity<?> getRentals();
+	RentalsResponseDTO getRentals();
 	
-	ResponseEntity<?> getRentalById(Integer id);
+	RentalFormDTO getRentalById(Integer id);
 	
-	ResponseEntity<?> postRental(MultipartFile picture, RentalDTO rentalDTO);
+	RentalResponseDTO postRental(MultipartFile picture, RentalDTO rentalDTO);
 	
-	ResponseEntity<?> updateRental(Integer id, RentalFormDTO rentalFormDTO);
+	RentalResponseDTO updateRental(Integer id, RentalFormDTO rentalFormDTO);
 }

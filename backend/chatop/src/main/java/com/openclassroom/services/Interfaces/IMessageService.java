@@ -1,11 +1,10 @@
 package com.openclassroom.services.Interfaces;
 
-import org.springframework.http.ResponseEntity;
-
 import com.openclassroom.dto.MessageRequestDTO;
+import com.openclassroom.dto.MessageResponseDTO;
 
 public interface IMessageService {
 	
-	ResponseEntity<?> postMessage(MessageRequestDTO messageDTO);
+	MessageResponseDTO postMessage(MessageRequestDTO messageDTO);
 
 }

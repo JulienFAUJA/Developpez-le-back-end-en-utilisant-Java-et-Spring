@@ -1,20 +1,18 @@
 package com.openclassroom.services.Interfaces;
 
-import org.springframework.http.ResponseEntity;
+import java.security.Principal;
 
+import com.openclassroom.dto.TokenDTO;
 import com.openclassroom.dto.UserLoggedDTO;
 import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
-import com.openclassroom.models.UserModel;
 
 public interface IAuthService {
+		
+	UserLoggedDTO me(Principal user);
 	
-	UserModel getCurrentUser(String label);
+	TokenDTO register(UserRegisterDTO request);
 	
-	ResponseEntity<?> me();
-	
-	ResponseEntity<?> register(UserRegisterDTO request);
-	
-	ResponseEntity<?> authenticating(UserLoginDTO request);
+	TokenDTO authenticating(UserLoginDTO request);
 
 }

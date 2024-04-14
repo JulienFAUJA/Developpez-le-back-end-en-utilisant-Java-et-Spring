@@ -36,9 +36,6 @@ public class UserService implements UserDetailsService, IUserService {
 	@Autowired
 	private ModelMapper modelMapper;
     
-    private UserDTO convertToDTO(UserModel user) {
-        return modelMapper.map(user, UserDTO.class);
-    }
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -47,7 +44,7 @@ public class UserService implements UserDetailsService, IUserService {
     }
 
     
-    
+
 	private List<GrantedAuthority> getGrantedAuthorities(String role) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
@@ -55,9 +52,9 @@ public class UserService implements UserDetailsService, IUserService {
 	}
    
 	
-	public ResponseEntity<?> getUserById(Integer id){
+	public UserDTO getUserById(Integer id){
 		Optional<UserModel> user = this.userRepository.findById(id);
-		return ResponseEntity.status(HttpStatus.OK).body(convertToDTO(user.orElseThrow()));
+		return modelMapper.map(user.orElseThrow(), UserDTO.class);
 	}
 	
 

@@ -18,7 +18,7 @@ import com.openclassroom.services.Interfaces.IFileService;
 @Service
 public class FileService implements IFileService{
 	
-	private final Path rootLocation;
+	private Path rootLocation;
 
     public FileService() {
         this.rootLocation = Paths.get(LocationHelpers.STATIC_DIR);

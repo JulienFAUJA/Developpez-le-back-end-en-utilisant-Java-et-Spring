@@ -1,27 +1,15 @@
 package com.openclassroom.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import com.openclassroom.dto.MessageRequestDTO;
 import com.openclassroom.dto.MessageResponseDTO;
-import com.openclassroom.dto.UserDTO;
 import com.openclassroom.models.MessageModel;
-import com.openclassroom.models.RentalModel;
-import com.openclassroom.models.UserModel;
 import com.openclassroom.repositories.MessageRepository;
-import com.openclassroom.repositories.RentalRepository;
-import com.openclassroom.repositories.UserRepository;
 import com.openclassroom.services.Interfaces.IMessageService;
-import com.openclassroom.services.Interfaces.IRentalService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -36,11 +24,6 @@ public class MessageService implements IMessageService{
 	@Autowired
 	private MessageRepository messageRepository;
 	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private RentalRepository rentalRepository;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -56,10 +39,10 @@ public class MessageService implements IMessageService{
     		@ApiResponse(responseCode = "401", description = "Non authorisé...",
             content = {@Content(mediaType = "application/json")}),
 	})
-    public ResponseEntity<?> postMessage(MessageRequestDTO messageDTO) {
+    public MessageResponseDTO postMessage(MessageRequestDTO messageDTO) {
     	if (messageDTO.getMessage() == null || messageDTO.getRental_id() == null || messageDTO.getUser_id() == null) {
-    		MessageResponseDTO errorResponse = new MessageResponseDTO();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    		MessageResponseDTO errorResponse = new MessageResponseDTO("Bad request: ");
+	        return errorResponse;
     	}
 		MessageModel messageCreated = modelMapper.map(messageDTO, MessageModel.class);
 		
@@ -69,12 +52,12 @@ public class MessageService implements IMessageService{
 		try {
 			messageRepository.save(messageCreated);
 			MessageResponseDTO messageResponse = new MessageResponseDTO("Message créé avec succès...");
-	    	return ResponseEntity.ok(messageResponse);
+	    	return messageResponse;
 		}
 		catch (AuthenticationException e) {
-	        // Si une exception d'authentification se produit (par exemple, erreur 401), renvoie un ResponseEntity avec un code de statut 401 Unauthorized
-	    	MessageResponseDTO errorResponse = new MessageResponseDTO();
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+	        // Si une exception d'authentification se produit (par exemple, erreur 401)
+	    	MessageResponseDTO errorResponse = new MessageResponseDTO("Unauthorized: ");
+	        return errorResponse;
 	    }
 		
     }

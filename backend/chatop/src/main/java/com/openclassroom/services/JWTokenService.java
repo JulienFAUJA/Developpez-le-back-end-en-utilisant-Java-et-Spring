@@ -20,12 +20,7 @@ import io.jsonwebtoken.security.Keys;
 public class JWTokenService implements IJWTokenService{
 
     @Value("${jwt.secret}")
-    private String jwtSecret;
-
-    
-    private final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
-    
-
+    private String SECRET_KEY;
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);

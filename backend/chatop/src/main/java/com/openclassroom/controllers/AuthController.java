@@ -1,6 +1,9 @@
 package com.openclassroom.controllers;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +16,8 @@ import com.openclassroom.dto.MessageResponseDTO;
 import com.openclassroom.dto.TokenDTO;
 import com.openclassroom.dto.UserLoginDTO;
 import com.openclassroom.dto.UserRegisterDTO;
-import com.openclassroom.services.AuthService;
+
+import com.openclassroom.services.Interfaces.IAuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -30,7 +34,7 @@ public class AuthController {
 
 
 @Autowired
-private AuthService authService;
+private IAuthService authService;
 	
 
 	@Operation(summary = "Création de compte utilisateur", description = "Permet de créer un compte utilisateur.")
@@ -43,7 +47,14 @@ private AuthService authService;
 	@PostMapping(value ="/register")
 	@ResponseBody
 	public ResponseEntity<?> postRegister(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
-		return authService.register(userRegisterDTO);
+		TokenDTO token =  authService.register(userRegisterDTO);
+		if (token == null) {
+			MessageResponseDTO errorResponse = new MessageResponseDTO("Unauthorized: ");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+		}
+		else {
+			return ResponseEntity.ok(token);
+		}
 	}
 	
 
@@ -59,7 +70,14 @@ private AuthService authService;
     })
 	@PostMapping(value ="/login", consumes={"application/json"})
     public ResponseEntity<?> login(@Valid @RequestBody(required = true) UserLoginDTO userLoginDTO) {
-		return authService.authenticating(userLoginDTO);
+		TokenDTO token = authService.authenticating(userLoginDTO);
+		if (token == null) {
+			MessageResponseDTO errorResponse = new MessageResponseDTO("Unauthorized: ");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+		}
+		else {
+			return ResponseEntity.ok(token);
+		} 
     }
 	
 	
@@ -71,8 +89,8 @@ private AuthService authService;
                     content = {@Content(mediaType = "application/json")}),
     })
 	@GetMapping(value ="/me")
-	public ResponseEntity<?> getMe() {
-		return this.authService.me();
+	public ResponseEntity<?> getMe(Principal user) {
+		return ResponseEntity.status(HttpStatus.OK).body(this.authService.me(user));
 		
 	}
 	
